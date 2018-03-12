@@ -20,7 +20,7 @@ function createWindow () {
               pathname: path.join(__dirname, '/../build/index.html'),
               protocol: 'file:',
               slashes: true
-          });.
+          });
   mainWindow.loadURL(startUrl);
 
   // Open the DevTools.
