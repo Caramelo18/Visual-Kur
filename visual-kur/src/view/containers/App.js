@@ -1,8 +1,17 @@
+import KurConfigController from '../../controller/KurConfigController';
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import logo from '../images/logo.svg';
+import '../styles/App.css';
 
 class App extends Component {
+  componentWillMount() {
+    let exampleController = new KurConfigController();
+
+    this.setState({
+      exampleController,
+    });
+  }
+
   render() {
     return (
       <div className="App">
@@ -11,7 +20,7 @@ class App extends Component {
           <h1 className="App-title">Welcome to React</h1>
         </header>
         <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
+          {this.state.exampleController.getExample()}
         </p>
       </div>
     );
