@@ -10,13 +10,16 @@ import FilePicker from './FilePicker';
 const drawerWidth = 350;
 
 const styles = theme => ({
-  root: {
-    flexGrow: 1,
+  appBar: {
+    'margin-bottom': 20,
+  },
+  appTitle: {
+    margin: 'auto',
   },
   drawerPaper: {
     position: 'absolute',
     width: drawerWidth,
-  },
+  }
 });
 
 class Sidebar extends React.Component {
@@ -30,11 +33,11 @@ class Sidebar extends React.Component {
           classes={{
             paper: classes.drawerPaper,
           }}
-        >
-          <AppBar position="static" color="default">
+          >
+            <AppBar position="static" color="primary" className={classes.appBar}>
             <Toolbar>
-              <Typography variant="title" color="inherit">
-                Visual Kur
+              <Typography variant="title" color="inherit" className={classes.appTitle}>
+                 Visual Kur
               </Typography>
             </Toolbar>
           </AppBar>

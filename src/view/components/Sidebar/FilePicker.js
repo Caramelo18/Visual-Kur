@@ -36,7 +36,7 @@ class FilePicker extends React.Component {
         <input onChange={this.handlePickFile} id="file-upload" type="file" className={classes.input}/>
         <label htmlFor="file-upload">
           <Button variant="raised" className={classes.button} component="span">
-            <FileUpload className={classes.rightIcon} />
+            <FileUpload className={classes.rightIcon}/>
           </Button>
         </label>
         <span>{this.state.file ? this.state.file.name : "No File Uploaded"}</span>
