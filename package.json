@@ -20,6 +20,7 @@
   "devDependencies": {
     "electron": "^1.8.3",
     "foreman": "^2.0.0",
+    "material-ui": "^0.20.0",
     "yamljs": "^0.3.0"
   }
 }
