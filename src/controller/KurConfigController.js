@@ -14,17 +14,58 @@ export default class KurConfigController {
   parseFile(file){
     this.model = new KurConfigModel();
 
-    console.log(Object.keys(file));
     for(let i = 0; i < file.length; i++){
       let element = file[i];
-      console.log(element);
+        let layer = this.getLayer(element);
+        this.model.addLayer(layer);
+    }
+    console.log(this.model);
+  }
+
+  getLayer(element){
+    let layer = {};
+
+    if(element.hasOwnProperty('input')){
+      layer.type = "input";
+      layer.input = element["input"];
+    }
+    if(element.hasOwnProperty('convolution')){
+      layer.type = "convolution";
+      let components = element.convolution;
+      this.addLayerComponents(layer, components);
+    }else if(element.hasOwnProperty('activation')){
+      layer.type = "activation";
+      layer.activation = element.activation;
+
+      if(element.hasOwnProperty("name")){
+        layer.name = element["name"];
+      }
+    }else if(element.hasOwnProperty('pool')){
+      layer.type = "pool";
+      let components = element.pool;
+      this.addLayerComponents(layer, components);
+    }else if(element.hasOwnProperty('flatten')){
+      layer.type = "flatten";
+      let components = element.flatten;
+      this.addLayerComponents(layer, components);
+    }else if(element.hasOwnProperty('dense')){
+      layer.type = "dense";
+      let components = element.dense;
+      this.addLayerComponents(layer, components);
     }
 
+    return layer;
+  }
 
+  addLayerComponents(layer, element){
+    for(let property in element){
+      layer[property] = element[property];
+    }
   }
 
   getExample () {
-    let exampleModel = new KurConfigModel();
-    return exampleModel.example;
+    return "This is working";
   }
+
+
 }
