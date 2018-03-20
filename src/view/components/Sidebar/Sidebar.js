@@ -45,8 +45,8 @@ class Sidebar extends React.Component {
         </Drawer>
       </div>
     )
-  }
-}
+  };
+};
 
 Sidebar.propTypes = {
   classes: PropTypes.object.isRequired,

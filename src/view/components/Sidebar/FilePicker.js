@@ -25,9 +25,9 @@ class FilePicker extends React.Component {
     if (e.target.files.length === 1) {
       this.setState({
         file: e.target.files[0]
-      })
+      });
     }
-  }
+  };
 
   render() {
     const { classes } = this.props;
@@ -42,8 +42,8 @@ class FilePicker extends React.Component {
         <span>{this.state.file ? this.state.file.name : "No File Uploaded"}</span>
       </div>
     )
-  }
-}
+  };
+};
 
 FilePicker.propTypes = {
   classes: PropTypes.object.isRequired,
