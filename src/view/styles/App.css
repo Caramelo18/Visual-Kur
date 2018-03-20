@@ -27,6 +27,32 @@
   flex-direction: row;
 }
 
+.rowContents {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    height: 10%;
+    border: solid #bbb 1px;
+    box-shadow: 0 2px 2px -2px;
+    border-radius: 2px;
+    min-width: 75px;
+    flex: 1 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+}
+
+.boldText {
+    font-weight: bold;
+    padding-left: 10px;
+}
+
+
+.sideBar {
+    flex: 1;
+    padding-left: 30px;
+}
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
