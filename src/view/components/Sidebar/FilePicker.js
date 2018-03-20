@@ -11,19 +11,35 @@ const styles = theme => ({
   input: {
     display: 'none',
   },
+  upload: {
+    display: 'flex',
+  }
 });
 
 class FilePicker extends React.Component {
+  state = {
+    file: undefined
+  };
+
+  handlePickFile = (e) => {
+    if (e.target.files.length === 1) {
+      this.setState({
+        file: e.target.files[0]
+      })
+    }
+  }
+
   render() {
     const { classes } = this.props;
     return (
-      <div>
-        <input id="file-upload" type="file" className={classes.input}/>
+      <div className="upload">
+        <input onChange={this.handlePickFile} id="file-upload" type="file" className={classes.input}/>
         <label htmlFor="file-upload">
           <Button variant="raised" className={classes.button} component="span">
             <FileUpload className={classes.rightIcon} />
           </Button>
         </label>
+        <span>{this.state.file ? this.state.file.name : "No File Uploaded"}</span>
       </div>
     )
   }
