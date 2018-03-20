@@ -27,7 +27,7 @@ class UnwrappedApp extends Component {
                 </header>
                 <div className="rowC">
                     <div className="sideBar">
-                        <YourExternalNodeComponent  node={{ title: 'Baby Rabbit' }} />
+                        <YourExternalNodeComponent  node={{ title: 'Baby Rabbit'}} />
                         <YourExternalNodeComponent  node={{ title: 'Pumba na fofinha' }} />
                     </div>
 
