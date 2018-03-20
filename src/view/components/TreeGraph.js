@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import SortableTree, {removeNodeAtPath} from 'react-sortable-tree';
+import {SortableTreeWithoutDndContext as SortableTree, removeNodeAtPath} from 'react-sortable-tree';
 import 'react-sortable-tree/style.css'; // This only needs to be imported once in your app
 import FileExplorerTheme from 'react-sortable-tree-theme-full-node-drag';
+
+
+
 
 export default class Tree extends Component {
     constructor(props) {
@@ -26,7 +29,7 @@ export default class Tree extends Component {
                     treeData={this.state.treeData}
                     onChange={treeData => this.setState({treeData})}
                     theme={FileExplorerTheme}
-
+                    dndType={this.props.dndType}
                     generateNodeProps={({ node, path }) => ({
                         buttons: [
                             <button
