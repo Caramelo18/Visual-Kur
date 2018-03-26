@@ -3,7 +3,7 @@ import {SortableTreeWithoutDndContext as SortableTree, removeNodeAtPath,  toggle
 import 'react-sortable-tree/style.css'; // This only needs to be imported once in your app
 import FileExplorerTheme from 'react-sortable-tree-theme-full-node-drag';
 import {externalNodeType} from '../components/NodetoDrag';
-
+import TitleExpansion from './TitleExpansion';
 
 
 
@@ -12,7 +12,7 @@ export default class Tree extends Component {
         super(props);
 
         this.state = {
-            treeData: [{title: 'Chicken', subtitle: 'test', children: [{title: 'Egg'}]}],
+            treeData: [{title: <TitleExpansion/>, subtitle: 'test', children: [{title: 'Egg'}]}],
         };
 
 

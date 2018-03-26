@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { DragDropContext, DragSource } from 'react-dnd';
 import '../styles/App.css';
+import TitleExpansion from "./TitleExpansion";
+
 
 
 const externalNodeType = 'yourNodeType';
@@ -26,10 +28,12 @@ class externalNodeBaseComponent extends Component {
     render() {
         const { connectDragSource, node } = this.props;
 
+        this.props.node.title = (<TitleExpansion/>);
+        
         return connectDragSource(
             <div
                 className="rowContents">
-                <span className="boldText">{node.title} </span>
+                <span className="boldText">Testes </span>
             </div>,
             { dropEffect: 'copy' }
         );
@@ -37,7 +41,7 @@ class externalNodeBaseComponent extends Component {
 }
 
 externalNodeBaseComponent.propTypes = {
-    node: PropTypes.shape({ title: PropTypes.string }).isRequired,
+    node: PropTypes.shape(TitleExpansion).isRequired,
     connectDragSource: PropTypes.func.isRequired,
 };
 
