@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import Sidebar from '../components/Sidebar/Sidebar';
 import KurConfigController from '../../controller/KurConfigController';
-import logo from '../images/logo.svg';
 import '../styles/App.css';
-import Tree from '../components/TreeGraph';
 import { DragDropContext, DragSource } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
-import {YourExternalNodeComponent,externalNodeType} from '../components/NodetoDrag';
+import Editor from "../components/Editor/Editor";
 
 
 
@@ -43,16 +41,7 @@ class UnwrappedApp extends Component {
             <MuiThemeProvider theme={theme}>
                 <div className="App">
                     <Sidebar/>
-                        <div className="rowC">
-                            <div className="sideBar">
-                                <YourExternalNodeComponent className="dragItem" node={{ title: 'Baby Rabbit'}} />
-                                <YourExternalNodeComponent className="dragItem" node={{ title: 'Pumba na fofinha' }} />
-                            </div>
-
-                            <div className="treeDisplayer">
-                                <Tree dndType={externalNodeType}/>
-                            </div>
-                        </div>
+                      <Editor/>
                     </div>
             </MuiThemeProvider>
         );

@@ -1,10 +1,27 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { DragDropContext, DragSource } from 'react-dnd';
-import '../styles/App.css';
+import '../../styles/App.css';
 import TitleExpansion from "./TitleExpansion";
 
-
+const styles = {
+    rowContents: {
+        display: "inline-block",
+        verticalAlign: "middle",
+        position: "relative",
+        height: 50,
+        border: "solid #bbb 1px",
+        boxShadow: "0 2px 2px -2px",
+        borderRadius: 2,
+        minWidth: 75,
+        flex: "1 0 auto",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        backgroundColor: "white",
+        marginTop: 20,
+    }
+};
 
 const externalNodeType = 'yourNodeType';
 
@@ -26,14 +43,13 @@ const externalNodeCollect = (connect /* , monitor */) => ({
 
 class externalNodeBaseComponent extends Component {
     render() {
-        const { connectDragSource, node } = this.props;
+        const {connectDragSource, node} = this.props;
 
         this.props.node.title = (<TitleExpansion/>);
-        
+
         return connectDragSource(
-            <div
-                className="rowContents">
-                <span className="boldText">Testes </span>
+            <div style={styles.rowContents}>
+                <span>Testes </span>
             </div>,
             { dropEffect: 'copy' }
         );
@@ -50,8 +66,6 @@ const YourExternalNodeComponent = DragSource(
     externalNodeSpec,
     externalNodeCollect
 )(externalNodeBaseComponent);
-
-
 
 
 export {

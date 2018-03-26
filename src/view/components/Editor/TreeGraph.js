@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import {SortableTreeWithoutDndContext as SortableTree, removeNodeAtPath,  toggleExpandedForAll} from 'react-sortable-tree';
 import 'react-sortable-tree/style.css'; // This only needs to be imported once in your app
 import FileExplorerTheme from 'react-sortable-tree-theme-full-node-drag';
-import {externalNodeType} from '../components/NodetoDrag';
+import {externalNodeType} from './NodetoDrag';
 import TitleExpansion from './TitleExpansion';
 
-
+const TreeHeight = window.innerHeight*0.95;
 
 export default class Tree extends Component {
     constructor(props) {
@@ -42,7 +42,7 @@ export default class Tree extends Component {
 
 
         return (
-            <div style={{height: window.innerHeight*0.95}}>
+            <div style={{height: TreeHeight}}>
                 <button onClick={this.expandAll}>Expand All</button>
                 <button onClick={this.collapseAll}>Collapse All</button>
 
