@@ -1,5 +1,7 @@
-import KurConfigController from '../../controller/KurConfigController';
 import React, { Component } from 'react';
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import Sidebar from '../components/Sidebar/Sidebar';
+import KurConfigController from '../../controller/KurConfigController';
 import logo from '../images/logo.svg';
 import '../styles/App.css';
 import Tree from '../components/TreeGraph';
@@ -8,6 +10,24 @@ import HTML5Backend from 'react-dnd-html5-backend';
 
 import {YourExternalNodeComponent,externalNodeType} from '../components/NodetoDrag';
 
+
+
+const theme = createMuiTheme({
+    palette: {
+        primary: {
+            light: '#757ce8',
+            main: '#3f50b5',
+            dark: '#002884',
+            contrastText: '#fff',
+        },
+        secondary: {
+            light: '#ff7961',
+            main: '#f44336',
+            dark: '#ba000d',
+            contrastText: '#000',
+        },
+    },
+});
 
 class UnwrappedApp extends Component {
     componentWillMount() {
@@ -20,22 +40,21 @@ class UnwrappedApp extends Component {
 
     render() {
         return (
-            <div className="App">
-                <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo" />
-                    <h1 className="App-title">Visual Kur</h1>
-                </header>
-                <div className="rowC">
-                    <div className="sideBar">
-                        <YourExternalNodeComponent  node={{ title: 'Baby Rabbit'}} />
-                        <YourExternalNodeComponent  node={{ title: 'Pumba na fofinha' }} />
-                    </div>
+            <MuiThemeProvider theme={theme}>
+                <div className="App">
+                    <Sidebar/>
+                        <div className="rowC">
+                            <div className="sideBar">
+                                <YourExternalNodeComponent className="dragItem" node={{ title: 'Baby Rabbit'}} />
+                                <YourExternalNodeComponent className="dragItem" node={{ title: 'Pumba na fofinha' }} />
+                            </div>
 
-                    <div style={{flex: 3}}>
-                        <Tree dndType={externalNodeType}/>
+                            <div className="treeDisplayer">
+                                <Tree dndType={externalNodeType}/>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+            </MuiThemeProvider>
         );
     }
 }

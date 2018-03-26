@@ -42,7 +42,7 @@ export default class Tree extends Component {
 
 
         return (
-            <div style={{height: 400}}>
+            <div style={{height: window.innerHeight*0.95}}>
                 <button onClick={this.expandAll}>Expand All</button>
                 <button onClick={this.collapseAll}>Collapse All</button>
 

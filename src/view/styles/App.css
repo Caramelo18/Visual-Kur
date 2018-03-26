@@ -31,7 +31,7 @@
     display: inline-block;
     vertical-align: middle;
     position: relative;
-    height: 10%;
+    height: 50px;
     border: solid #bbb 1px;
     box-shadow: 0 2px 2px -2px;
     border-radius: 2px;
@@ -41,6 +41,8 @@
     align-items: center;
     justify-content: space-between;
     background-color: white;
+    margin-left: 350px;
+    margin-top: 20px;
 }
 
 .boldText {
@@ -56,4 +58,9 @@
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+.treeDisplayer {
+    flex: 3;
+    height: 100%;
 }
