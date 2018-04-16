@@ -5,7 +5,6 @@ import KurConfigController from '../../controller/KurConfigController';
 import '../styles/App.css';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-
 import Editor from "../components/Editor/Editor";
 
 
@@ -28,11 +27,15 @@ const theme = createMuiTheme({
 });
 
 class UnwrappedApp extends Component {
+    state = {
+      controller: undefined
+    };
+
     componentWillMount() {
-        let exampleController = new KurConfigController();
+        let controller = new KurConfigController();
 
         this.setState({
-            exampleController,
+            controller: controller,
         });
     }
 
@@ -40,9 +43,9 @@ class UnwrappedApp extends Component {
         return (
             <MuiThemeProvider theme={theme}>
                 <div className="App">
-                    <Sidebar/>
-                      <Editor/>
-                    </div>
+                    <Sidebar controller={this.state.controller}/>
+                    <Editor/>
+                </div>
             </MuiThemeProvider>
         );
     }

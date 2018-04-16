@@ -24,8 +24,10 @@ class FilePicker extends React.Component {
   handlePickFile = (e) => {
     if (e.target.files.length === 1) {
       this.setState({
-        file: e.target.files[0]
+        file: e.target.files[0].path
       });
+      let filePath = e.target.files[0].name;
+      this.props.controller.loadFile(filePath);
     }
   };
 
