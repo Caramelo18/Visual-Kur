@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { DragDropContext, DragSource } from 'react-dnd';
+import { DragSource } from 'react-dnd';
 import '../../styles/App.css';
 import TitleExpansion from "./TitleExpansion";
 
