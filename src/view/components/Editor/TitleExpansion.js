@@ -3,18 +3,16 @@ import React, { Component } from 'react';
 
 export default class TitleExpansion extends Component {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            title: 'empty title'
-        }
-    }
-
     render() {
+        const {node} = this.props
+
+        const type = (
+            <span>{node.type}</span>
+        )
+
         return (
             <div>
-                <span>{this.state.title}</span>
+                {type}
             </div>
         )
     }

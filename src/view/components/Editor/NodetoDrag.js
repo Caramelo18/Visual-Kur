@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { DragDropContext, DragSource } from 'react-dnd';
-import '../../styles/App.css';
-import TitleExpansion from "./TitleExpansion";
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { DragSource } from 'react-dnd'
+import '../../styles/App.css'
+import SubTitleExpansion from './SubTitleExpansion'
+import TitleExpansion from './TitleExpansion'
 
 const styles = {
     rowContents: {
-        display: "inline-block",
         verticalAlign: "middle",
         position: "relative",
         height: 50,
@@ -45,11 +45,11 @@ class externalNodeBaseComponent extends Component {
     render() {
         const {connectDragSource, node} = this.props;
 
-        this.props.node.title = (<TitleExpansion/>);
+
 
         return connectDragSource(
             <div style={styles.rowContents}>
-                <span>Testes </span>
+                <TitleExpansion node={node}/>
             </div>,
             { dropEffect: 'copy' }
         );
@@ -57,7 +57,9 @@ class externalNodeBaseComponent extends Component {
 }
 
 externalNodeBaseComponent.propTypes = {
-    node: PropTypes.shape(TitleExpansion).isRequired,
+    node: PropTypes.shape({
+        type: PropTypes.string,
+    }).isRequired,
     connectDragSource: PropTypes.func.isRequired,
 };
 

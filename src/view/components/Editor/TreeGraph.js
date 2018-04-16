@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import {SortableTreeWithoutDndContext as SortableTree, removeNodeAtPath,  toggleExpandedForAll} from 'react-sortable-tree';
+import {SortableTreeWithoutDndContext as SortableTree, removeNodeAtPath,  toggleExpandedForAll, changeNodeAtPath} from 'react-sortable-tree';
 import 'react-sortable-tree/style.css'; // This only needs to be imported once in your app
-import FileExplorerTheme from 'react-sortable-tree-theme-full-node-drag';
 import {externalNodeType} from './NodetoDrag';
-import TitleExpansion from './TitleExpansion';
+import SubTitleExpansion from './SubTitleExpansion';
+import TitleExpansion from "./TitleExpansion";
 
 const TreeHeight = window.innerHeight*0.95;
 
@@ -12,12 +12,17 @@ export default class Tree extends Component {
         super(props);
 
         this.state = {
-            treeData: [{title: <TitleExpansion/>, subtitle: 'test', children: [{title: 'Egg'}]}],
+            treeData: [{type: 20, inputvalue:'234', subtitle: 'test', children: [{title: 'Egg'}]}],
         };
 
 
         this.expandAll = this.expandAll.bind(this);
         this.collapseAll = this.collapseAll.bind(this);
+        this.changeNodeInput = this.changeNodeInput.bind(this);
+        this.changeNodeActivation = this.changeNodeActivation.bind(this);
+        this.changeNodeArray = this.changeNodeArray.bind(this);
+
+
     }
 
     expand(expanded) {
@@ -37,6 +42,46 @@ export default class Tree extends Component {
         this.expand(false);
     }
 
+    changeNodeInput(node,path,getNodeKey, input) {
+        this.setState(state => ({
+            treeData: changeNodeAtPath({
+                treeData: state.treeData,
+                path,
+                getNodeKey,
+                newNode: {...node, input}
+            })
+        }))
+    }
+
+    changeNodeActivation(node,path,getNodeKey, activation) {
+        this.setState(state => ({
+            treeData: changeNodeAtPath({
+                treeData: state.treeData,
+                path,
+                getNodeKey,
+                newNode: {...node, activation}
+            })
+        }))
+    }
+
+    changeNodeArray(node,path,getNodeKey, x,y) {
+        let size = Object.assign({}, node.size)
+        size.x = x
+        size.y = y
+        this.setState(state => ({
+            treeData: changeNodeAtPath({
+                treeData: state.treeData,
+                path,
+                getNodeKey,
+                newNode: {...node, size}
+            })
+        }))
+
+        console.log(node)
+    }
+
+
+
     render() {
         const getNodeKey = ({ treeIndex }) => treeIndex;
 
@@ -49,7 +94,6 @@ export default class Tree extends Component {
                 <SortableTree
                     treeData={this.state.treeData}
                     onChange={treeData => this.setState({treeData})}
-                    theme={FileExplorerTheme}
                     dndType={externalNodeType}
                     generateNodeProps={({ node, path }) => ({
                         buttons: [
@@ -65,21 +109,15 @@ export default class Tree extends Component {
                                 }
                             >
                                 Remove
-                            </button>,
-                            <button
-                                onClick={() =>
-                                    this.setState(state => ({
-                                        treeData: removeNodeAtPath({
-                                            treeData: state.treeData,
-                                            path,
-                                            getNodeKey,
-                                        }),
-                                    }))
-                                }
-                            >
-                                Details
-                            </button>,
+                            </button>
                         ],
+                        title: (
+                            <TitleExpansion node={node}/>
+                        ),
+                        subtitle: (
+                            <SubTitleExpansion node={node} path={path} getNodeKey={getNodeKey} changeNodeInput={this.changeNodeInput}
+                            changeNodeActivation={this.changeNodeActivation} changeNodeArray={this.changeNodeArray}/>
+                        )
                     })}
                 />
             </div>

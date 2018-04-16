@@ -3,7 +3,7 @@ import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import Sidebar from '../components/Sidebar/Sidebar';
 import KurConfigController from '../../controller/KurConfigController';
 import '../styles/App.css';
-import { DragDropContext, DragSource } from 'react-dnd';
+import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
 import Editor from "../components/Editor/Editor";
