@@ -1,30 +1,52 @@
-import KurConfigController from '../../controller/KurConfigController';
 import React, { Component } from 'react';
-import logo from '../images/logo.svg';
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import Sidebar from '../components/Sidebar/Sidebar';
+import KurConfigController from '../../controller/KurConfigController';
 import '../styles/App.css';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
-class App extends Component {
-  componentWillMount() {
-    let exampleController = new KurConfigController();
+import Editor from "../components/Editor/Editor";
 
-    this.setState({
-      exampleController,
-    });
-  }
 
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          {this.state.exampleController.getExample()}
-        </p>
-      </div>
-    );
-  }
+
+const theme = createMuiTheme({
+    palette: {
+        primary: {
+            light: '#757ce8',
+            main: '#3f50b5',
+            dark: '#002884',
+            contrastText: '#fff',
+        },
+        secondary: {
+            light: '#ff7961',
+            main: '#f44336',
+            dark: '#ba000d',
+            contrastText: '#000',
+        },
+    },
+});
+
+class UnwrappedApp extends Component {
+    componentWillMount() {
+        let exampleController = new KurConfigController();
+
+        this.setState({
+            exampleController,
+        });
+    }
+
+    render() {
+        return (
+            <MuiThemeProvider theme={theme}>
+                <div className="App">
+                    <Sidebar/>
+                      <Editor/>
+                    </div>
+            </MuiThemeProvider>
+        );
+    }
 }
 
+const App = DragDropContext(HTML5Backend)(UnwrappedApp);
 export default App;
