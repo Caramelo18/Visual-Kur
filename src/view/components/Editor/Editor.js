@@ -35,9 +35,9 @@ class Editor extends Component {
                     <YourExternalNodeComponent node={{ type:'input', input: 'images'}} />
                     <YourExternalNodeComponent node={{ type: 'convolution', kernels: 23, size: {x :3, y:4} }}/>
                     <YourExternalNodeComponent node={{ type: 'activation', activation: "relu"}} />
-                    <YourExternalNodeComponent node={{ type: 'pool', size: {x: 3, y: 5} }} />
+                    <YourExternalNodeComponent node={{ type: 'pool', pool: {x: 3, y: 5} }} />
                     <YourExternalNodeComponent node={{ type: 'flatten'}} />
-                    <YourExternalNodeComponent node={{ type: 'dense', size: {x: 3, y: 5} }} />
+                    <YourExternalNodeComponent node={{ type: 'dense', dense: {x: 3, y: 5} }} />
                 </div>
 
                 <div className={classes.treeDisplayer}>

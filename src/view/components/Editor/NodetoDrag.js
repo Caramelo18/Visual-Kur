@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { DragSource } from 'react-dnd';
 import '../../styles/App.css';
 import TitleExpansion from "./TitleExpansion";
+import Card from 'material-ui/Card'
 
 const styles = {
     rowContents: {
@@ -47,8 +48,10 @@ class externalNodeBaseComponent extends Component {
 
 
         return connectDragSource(
-            <div style={styles.rowContents}>
-                <TitleExpansion node={node}/>
+            <div>
+                <Card style={styles.rowContents}>
+                    <TitleExpansion node={node}/>
+                </Card>
             </div>,
             { dropEffect: 'copy' }
         );

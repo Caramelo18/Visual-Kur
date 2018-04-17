@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import {CardContent} from 'material-ui/Card'
+import Typography from 'material-ui/Typography'
 
 
 export default class TitleExpansion extends Component {
@@ -6,14 +8,10 @@ export default class TitleExpansion extends Component {
     render() {
         const {node} = this.props
 
-        const type = (
-            <span>{node.type}</span>
-        )
-
         return (
-            <div>
-                {type}
-            </div>
+            <CardContent>
+                <Typography>{node.type}</Typography>
+            </CardContent>
         )
     }
 }
