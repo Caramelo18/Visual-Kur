@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { DragSource } from 'react-dnd'
 import '../../styles/App.css'
-import SubTitleExpansion from './SubTitleExpansion'
 import TitleExpansion from './TitleExpansion'
 
 const styles = {

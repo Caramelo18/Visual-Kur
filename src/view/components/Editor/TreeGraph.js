@@ -4,15 +4,22 @@ import 'react-sortable-tree/style.css'; // This only needs to be imported once i
 import {externalNodeType} from './NodetoDrag';
 import SubTitleExpansion from './SubTitleExpansion';
 import TitleExpansion from "./TitleExpansion";
-
+import Button from 'material-ui/Button';
+import Typography from 'material-ui/Typography';
 const TreeHeight = window.innerHeight*0.95;
 
+const styles = theme => ({
+
+    firstButton: {
+        marginLeft: 20,
+    }
+});
 export default class Tree extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            treeData: [{type: 20, inputvalue:'234', subtitle: 'test', children: [{title: 'Egg'}]}],
+            treeData: [],
         };
 
 
@@ -65,9 +72,9 @@ export default class Tree extends Component {
     }
 
     changeNodeArray(node,path,getNodeKey, x,y) {
-        let size = Object.assign({}, node.size)
-        size.x = x
-        size.y = y
+        let size = Object.assign({}, node.size);
+        size.x = x;
+        size.y = y;
         this.setState(state => ({
             treeData: changeNodeAtPath({
                 treeData: state.treeData,
@@ -76,21 +83,25 @@ export default class Tree extends Component {
                 newNode: {...node, size}
             })
         }))
-
-        console.log(node)
     }
 
 
 
     render() {
+
         const getNodeKey = ({ treeIndex }) => treeIndex;
 
 
         return (
             <div style={{height: TreeHeight}}>
-                <button onClick={this.expandAll}>Expand All</button>
-                <button onClick={this.collapseAll}>Collapse All</button>
-
+                <div>
+                    <Button variant="raised" color="primary" onClick={this.expandAll}>
+                        <Typography variant="button" color="inherit"> Expand All </Typography>
+                    </Button>
+                <Button variant="raised" color="primary" label="Collapse All" onClick={this.collapseAll}>
+                    <Typography variant="button" color="inherit"> Collapse All </Typography>
+                </Button>
+                </div>
                 <SortableTree
                     treeData={this.state.treeData}
                     onChange={treeData => this.setState({treeData})}
@@ -112,10 +123,10 @@ export default class Tree extends Component {
                             </button>
                         ],
                         title: (
-                            <TitleExpansion node={node}/>
+                            <TitleExpansion color="primary" node={node}/>
                         ),
                         subtitle: (
-                            <SubTitleExpansion node={node} path={path} getNodeKey={getNodeKey} changeNodeInput={this.changeNodeInput}
+                            <SubTitleExpansion color="primary" node={node} path={path} getNodeKey={getNodeKey} changeNodeInput={this.changeNodeInput}
                             changeNodeActivation={this.changeNodeActivation} changeNodeArray={this.changeNodeArray}/>
                         )
                     })}

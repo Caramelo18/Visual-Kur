@@ -37,7 +37,6 @@ export default class SubTitleExpansion extends Component {
                        onChange={event => {
                            let y = event.target.value
                            let x = node.size.x
-                           let size = [{x: node.size[0],y: event.target.value}]
                            changeNodeArray(node, path, getNodeKey, x, y)
                        }
                        }/>
