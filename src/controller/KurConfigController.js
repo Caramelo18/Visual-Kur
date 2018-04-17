@@ -51,7 +51,8 @@ export default class KurConfigController {
     }else if(element.hasOwnProperty('dense')){
       layer.type = "dense";
       let components = element.dense;
-      this.addLayerComponents(layer, components);
+      let arr = {x: components[0], y: components[1]};
+      layer["dense"] = arr;
     }
 
     return layer;
@@ -59,6 +60,11 @@ export default class KurConfigController {
 
   addLayerComponents(layer, element){
     for(let property in element){
+      if(Array.isArray(element[property])){
+        let arr = {x: element[property][0], y: element[property][1]};
+        layer[property] = arr;
+        continue;
+      }
       layer[property] = element[property];
     }
   }
