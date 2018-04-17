@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { DragSource } from 'react-dnd'
-import '../../styles/App.css'
-import TitleExpansion from './TitleExpansion'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { DragSource } from 'react-dnd';
+import '../../styles/App.css';
+import TitleExpansion from "./TitleExpansion";
 
 const styles = {
     rowContents: {

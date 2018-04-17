@@ -1,3 +1,7 @@
 export default class KurConfigModel {
-  example = "This is working.";
+  layers = [];
+
+  addLayer(layer){
+    this.layers.push(layer);
+  }
 }
