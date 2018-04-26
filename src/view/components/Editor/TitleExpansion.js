@@ -1,21 +1,17 @@
 import React, { Component } from 'react';
+import {CardContent} from 'material-ui/Card'
+import Typography from 'material-ui/Typography'
 
 
 export default class TitleExpansion extends Component {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            title: 'empty title'
-        }
-    }
-
     render() {
+        const {node} = this.props
+
         return (
-            <div>
-                <span>{this.state.title}</span>
-            </div>
+            <CardContent>
+                <Typography>{node.type}</Typography>
+            </CardContent>
         )
     }
 }

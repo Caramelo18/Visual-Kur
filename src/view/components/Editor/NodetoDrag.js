@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { DragSource } from 'react-dnd';
 import '../../styles/App.css';
 import TitleExpansion from "./TitleExpansion";
+import Card from 'material-ui/Card'
 
 const styles = {
     rowContents: {
-        display: "inline-block",
         verticalAlign: "middle",
         position: "relative",
         height: 50,
@@ -45,11 +45,13 @@ class externalNodeBaseComponent extends Component {
     render() {
         const {connectDragSource, node} = this.props;
 
-        this.props.node.title = (<TitleExpansion/>);
+
 
         return connectDragSource(
-            <div style={styles.rowContents}>
-                <span>Testes </span>
+            <div>
+                <Card style={styles.rowContents}>
+                    <TitleExpansion node={node}/>
+                </Card>
             </div>,
             { dropEffect: 'copy' }
         );
@@ -57,7 +59,9 @@ class externalNodeBaseComponent extends Component {
 }
 
 externalNodeBaseComponent.propTypes = {
-    node: PropTypes.shape(TitleExpansion).isRequired,
+    node: PropTypes.shape({
+        type: PropTypes.string,
+    }).isRequired,
     connectDragSource: PropTypes.func.isRequired,
 };
 
