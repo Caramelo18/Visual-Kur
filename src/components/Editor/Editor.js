@@ -27,7 +27,9 @@ class Editor extends Component {
 
 
     render() {
-        const { classes } = this.props;
+        const { classes, updateLayers, getLayers } = this.props;
+
+        const tree = getLayers();
 
         return (
             <div className={classes.rowC}>
@@ -41,7 +43,7 @@ class Editor extends Component {
                 </div>
 
                 <div className={classes.treeDisplayer}>
-                    <Tree/>
+                    <Tree updateLayers={updateLayers} tree={tree}/>
                 </div>
             </div>
         );
