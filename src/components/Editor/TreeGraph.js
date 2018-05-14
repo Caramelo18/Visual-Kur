@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import {SortableTreeWithoutDndContext as SortableTree, removeNodeAtPath,  toggleExpandedForAll, changeNodeAtPath} from 'react-sortable-tree';
+import {SortableTreeWithoutDndContext as SortableTree, removeNodeAtPath, changeNodeAtPath} from 'react-sortable-tree';
 import 'react-sortable-tree/style.css'; // This only needs to be imported once in your app
 import {externalNodeType} from './NodetoDrag';
 import SubTitleExpansion from './SubTitleExpansion';
-import Button from 'material-ui/Button';
-import Typography from 'material-ui/Typography';
 
 
 
@@ -14,137 +12,102 @@ export default class Tree extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            treeData: [],
-        };
-
-
-        this.expandAll = this.expandAll.bind(this);
-        this.collapseAll = this.collapseAll.bind(this);
         this.changeNodeInput = this.changeNodeInput.bind(this);
         this.changeNodeActivation = this.changeNodeActivation.bind(this);
         this.changeNodeSize = this.changeNodeSize.bind(this);
         this.changeNodePool = this.changeNodePool.bind(this);
         this.changeNodeDense = this.changeNodeDense.bind(this);
 
-
-
-
-    }
-
-    expand(expanded) {
-        this.setState({
-            treeData: toggleExpandedForAll({
-                treeData: this.state.treeData,
-                expanded,
-            }),
-        });
-    }
-
-    expandAll() {
-        this.expand(true);
-    }
-
-    collapseAll() {
-        this.expand(false);
     }
 
     changeNodeInput(node,path,getNodeKey, input) {
-        this.setState(state => ({
-            treeData: changeNodeAtPath({
-                treeData: state.treeData,
-                path,
-                getNodeKey,
-                newNode: {...node, input}
-            })
-        }))
+        const newTree = changeNodeAtPath({
+            treeData: this.props.tree,
+            path,
+            getNodeKey,
+            newNode: {...node, input}
+        })
+
+        this.props.updateLayers(newTree);
     }
 
     changeNodeActivation(node,path,getNodeKey, activation) {
-        this.setState(state => ({
-            treeData: changeNodeAtPath({
-                treeData: state.treeData,
-                path,
-                getNodeKey,
-                newNode: {...node, activation}
-            })
-        }))
+        const newTree = changeNodeAtPath({
+            treeData: this.props.tree,
+            path,
+            getNodeKey,
+            newNode: {...node, activation}
+        })
+
+        this.props.updateLayers(newTree);
     }
+
 
     changeNodeSize(node,path,getNodeKey, x,y) {
         let size = Object.assign({}, node.size);
         size.x = x;
         size.y = y;
-        this.setState(state => ({
-            treeData: changeNodeAtPath({
-                treeData: state.treeData,
+        const newTree = changeNodeAtPath({
+                treeData: this.props.tree,
                 path,
                 getNodeKey,
                 newNode: {...node, size}
-            })
-        }))
+            });
+        this.props.updateLayers(newTree);
     }
 
     changeNodePool(node,path,getNodeKey, x,y) {
         let pool = Object.assign({}, node.size);
         pool.x = x;
         pool.y = y;
-        this.setState(state => ({
-            treeData: changeNodeAtPath({
-                treeData: state.treeData,
+
+        const newTree = changeNodeAtPath({
+                treeData: this.props.tree,
                 path,
                 getNodeKey,
                 newNode: {...node, pool}
             })
-        }))
+        this.props.updateLayers(newTree);
     }
 
     changeNodeDense(node,path,getNodeKey, x,y) {
         let dense = Object.assign({}, node.size);
         dense.x = x;
         dense.y = y;
-        this.setState(state => ({
-            treeData: changeNodeAtPath({
-                treeData: state.treeData,
+
+        const newTree = changeNodeAtPath({
+                treeData: this.props.tree,
                 path,
                 getNodeKey,
                 newNode: {...node, dense}
-            })
-        }))
+            });
+
+        this.props.updateLayers(newTree);
     }
 
 
     render() {
 
         const getNodeKey = ({ treeIndex }) => treeIndex;
-
+        const { updateLayers, tree } = this.props;
 
         return (
             <div style={{height: TreeHeight}}>
-                <div>
-                    <Button variant="raised" color="primary" onClick={this.expandAll}>
-                        <Typography variant="button" color="inherit"> Expand All </Typography>
-                    </Button>
-                <Button variant="raised" color="primary" label="Collapse All" onClick={this.collapseAll}>
-                    <Typography variant="button" color="inherit"> Collapse All </Typography>
-                </Button>
-                </div>
                 <SortableTree
-                    treeData={this.state.treeData}
-                    onChange={treeData => this.setState({treeData})}
+                    treeData={tree}
+                    onChange={treeData => updateLayers(treeData)}
                     dndType={externalNodeType}
                     generateNodeProps={({ node, path }) => ({
                         buttons: [
                             <button
                                 onClick={() =>
-                                    this.setState(state => ({
-                                        treeData: removeNodeAtPath({
-                                            treeData: state.treeData,
+                                    updateLayers(
+                                        removeNodeAtPath({
+                                            treeData: tree,
                                             path,
                                             getNodeKey,
-                                        }),
-                                    }))
-                                }
+                                        })
+                                    )}
                             >
                                 Remove
                             </button>
