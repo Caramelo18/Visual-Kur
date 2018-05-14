@@ -14,7 +14,7 @@ const styles = theme => ({
     rowC: {
         display: "flex",
         flexDirection: "row",
-        marginLeft: 350,
+        width: 850
     },
 
 

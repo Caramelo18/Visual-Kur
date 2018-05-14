@@ -7,7 +7,7 @@ import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import FilePicker from './FilePicker';
 
-const drawerWidth = 350;
+const drawerWidth = '18%';
 
 const styles = theme => ({
   appBar: {

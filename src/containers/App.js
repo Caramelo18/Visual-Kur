@@ -5,11 +5,17 @@ import '../styles/App.css';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import Editor from "../components/Editor/Editor";
+import TextEditor from "../components/TextEditor/TextEditor";
 import yamljs from "yamljs";
+import Grid from 'material-ui/Grid';
 
 
 
 const theme = createMuiTheme({
+    root: {
+        flexGrow: 1,
+        width: 'fit-content'
+    },
     palette: {
         primary: {
             light: '#757ce8',
@@ -122,8 +128,17 @@ class UnwrappedApp extends Component {
         return (
             <MuiThemeProvider theme={theme}>
                 <div className="App">
-                    <Sidebar loadFile={this.loadFile}/>
-                    <Editor  updateLayers={this.updateLayers} getLayers={this.getLayers}/>
+                    <Grid container className="root" spacing="0">
+                      <Grid item xs="2">
+                        <Sidebar loadFile={this.loadFile}/>
+                      </Grid>
+                      <Grid item xs="4">
+                        <TextEditor />
+                      </Grid>
+                      <Grid item xs="5">
+                        <Editor  updateLayers={this.updateLayers} getLayers={this.getLayers}/>
+                      </Grid>
+                    </Grid>
                 </div>
             </MuiThemeProvider>
         );
