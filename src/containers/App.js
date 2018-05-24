@@ -42,6 +42,7 @@ class UnwrappedApp extends Component {
 
         this.updateLayers = this.updateLayers.bind(this);
         this.loadFile = this.loadFile.bind(this);
+        this.parseFile = this.parseFile.bind(this);
         this.getLayers = this.getLayers.bind(this);
     }
 
@@ -62,7 +63,7 @@ class UnwrappedApp extends Component {
               yamlText = text;
               this.child.setText(yamlText);
               this.parseFile(yamlText);
-          })
+          });
 
     }
 
@@ -140,7 +141,7 @@ class UnwrappedApp extends Component {
                         <Sidebar loadFile={this.loadFile}/>
                       </Grid>
                       <Grid item xs={4}>
-                        <TextEditor onRef={ref => {this.child = ref}}/>
+                        <TextEditor onRef={ref => {this.child = ref}} parseFile={this.parseFile}/>
                       </Grid>
                       <Grid item xs={6}>
                         <Editor  updateLayers={this.updateLayers} getLayers={this.getLayers}/>

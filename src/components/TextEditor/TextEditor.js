@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import AceEditor from 'react-ace';
-import PropTypes from 'prop-types';
 
 import 'brace/mode/yaml';
 import 'brace/theme/github';
@@ -15,17 +15,18 @@ const styles = theme => ({
 });
 
 
-
 class TextEditor extends Component {
     componentDidMount() {
-        this.props.onRef(this)
+        this.props.onRef(this);
     }
 
     constructor(props) {
         super(props);
         this.state = {
           value: ""
-        }
+        };
+
+        this.onChange = this.onChange.bind(this);
     }
 
     componentWillUnmount() {
@@ -39,7 +40,10 @@ class TextEditor extends Component {
     }
 
     onChange(newValue) {
-      //console.log('change',newValue);
+      this.props.parseFile(newValue);
+      this.setState({
+        value: newValue
+      });
     }
 
     render() {
@@ -62,6 +66,7 @@ class TextEditor extends Component {
 
 TextEditor.propTypes = {
     classes: PropTypes.object.isRequired,
+    parseFile: PropTypes.func
 };
 
 export default withStyles(styles)(TextEditor);
