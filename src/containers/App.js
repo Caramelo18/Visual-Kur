@@ -47,77 +47,84 @@ class UnwrappedApp extends Component {
 
 
     componentDidMount() {
-        this.loadFile('./mnist.yml');
+        //this.loadFile('./mnist.yml');
     }
 
     updateLayers(layers) {
         this.setState({layers})
     }
 
-    loadFile(filename){
-        const file = yamljs.load(filename);
+    loadFile(filename) {
+        let yamlText;
+        fetch(filename)
+          .then(response => response.text())
+          .then(text => {
+              yamlText = text;
+              this.child.setText(yamlText);
+              this.parseFile(yamlText);
+          })
 
-        const parseFile = (file) => {
-            let layers = [];
+    }
 
-            const getLayer = (element) => {
+    parseFile(fileContent) {
+        let file = yamljs.parse(fileContent).model
+        let layers = [];
 
-                let layer = {};
+        const getLayer = (element) => {
 
-                const addLayerComponents = (layer, element) => {
-                    for(let property in element){
-                        if(Array.isArray(element[property])){
-                            let arr = {x: element[property][0], y: element[property][1]};
-                            layer[property] = arr;
-                            continue;
-                        }
-                        layer[property] = element[property];
+            let layer = {};
+
+            const addLayerComponents = (layer, element) => {
+                for(let property in element){
+                    if(Array.isArray(element[property])){
+                        let arr = {x: element[property][0], y: element[property][1]};
+                        layer[property] = arr;
+                        continue;
                     }
+                    layer[property] = element[property];
                 }
-
-                if(element.hasOwnProperty('input')){
-                    layer.type = "input";
-                    layer.input = element["input"];
-                }
-                if(element.hasOwnProperty('convolution')){
-                    layer.type = "convolution";
-                    let components = element.convolution;
-                    addLayerComponents(layer, components);
-                }else if(element.hasOwnProperty('activation')){
-                    layer.type = "activation";
-                    layer.activation = element.activation;
-
-                    if(element.hasOwnProperty("name")){
-                        layer.name = element["name"];
-                    }
-                }else if(element.hasOwnProperty('pool')){
-                    layer.type = "pool";
-                    let components = element.pool;
-                    addLayerComponents(layer, components);
-                }else if(element.hasOwnProperty('flatten')){
-                    layer.type = "flatten";
-                    let components = element.flatten;
-                    addLayerComponents(layer, components);
-                }else if(element.hasOwnProperty('dense')){
-                    layer.type = "dense";
-                    let components = element.dense;
-                    let arr = {x: components[0], y: components[1]};
-                    layer["dense"] = arr;
-                }
-
-                return layer;
             }
 
-            for(let i = 0; i < file.length; i++){
-                let element = file[i];
-                let layer = getLayer(element);
-                layers.push(layer);
+            if(element.hasOwnProperty('input')){
+                layer.type = "input";
+                layer.input = element["input"];
+            }
+            if(element.hasOwnProperty('convolution')){
+                layer.type = "convolution";
+                let components = element.convolution;
+                addLayerComponents(layer, components);
+            }else if(element.hasOwnProperty('activation')){
+                layer.type = "activation";
+                layer.activation = element.activation;
+
+                if(element.hasOwnProperty("name")){
+                    layer.name = element["name"];
+                }
+            }else if(element.hasOwnProperty('pool')){
+                layer.type = "pool";
+                let components = element.pool;
+                addLayerComponents(layer, components);
+            }else if(element.hasOwnProperty('flatten')){
+                layer.type = "flatten";
+                let components = element.flatten;
+                addLayerComponents(layer, components);
+            }else if(element.hasOwnProperty('dense')){
+                layer.type = "dense";
+                let components = element.dense;
+                let arr = {x: components[0], y: components[1]};
+                layer["dense"] = arr;
             }
 
-            this.setState({layers})
+            return layer;
         }
 
-        parseFile(file.model);
+        for(let i = 0; i < file.length; i++){
+            let element = file[i];
+            let layer = getLayer(element);
+            layers.push(layer);
+        }
+
+        this.setState({layers})
     }
 
     getLayers(){
@@ -128,14 +135,14 @@ class UnwrappedApp extends Component {
         return (
             <MuiThemeProvider theme={theme}>
                 <div className="App">
-                    <Grid container className="root" spacing="0">
-                      <Grid item xs="2">
+                    <Grid container className="root" spacing={0}>
+                      <Grid item xs={2}>
                         <Sidebar loadFile={this.loadFile}/>
                       </Grid>
-                      <Grid item xs="4">
-                        <TextEditor />
+                      <Grid item xs={4}>
+                        <TextEditor onRef={ref => {this.child = ref}}/>
                       </Grid>
-                      <Grid item xs="5">
+                      <Grid item xs={6}>
                         <Editor  updateLayers={this.updateLayers} getLayers={this.getLayers}/>
                       </Grid>
                     </Grid>
