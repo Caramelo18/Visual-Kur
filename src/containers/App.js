@@ -37,13 +37,17 @@ class UnwrappedApp extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            layers: []
+            layers: [],
+            showTextEditor: true,
+            textEditorWidth: 4,
+            editorWidth: 6
         };
 
         this.updateLayers = this.updateLayers.bind(this);
         this.loadFile = this.loadFile.bind(this);
         this.parseFile = this.parseFile.bind(this);
         this.getLayers = this.getLayers.bind(this);
+        this.toggleTextEditor = this.toggleTextEditor.bind(this);
     }
 
 
@@ -68,7 +72,7 @@ class UnwrappedApp extends Component {
     }
 
     parseFile(fileContent) {
-        let file = yamljs.parse(fileContent).model
+        let file = yamljs.parse(fileContent).model;
         let layers = [];
 
         const getLayer = (element) => {
@@ -125,11 +129,30 @@ class UnwrappedApp extends Component {
             layers.push(layer);
         }
 
-        this.setState({layers})
+        this.setState({layers});
     }
 
     getLayers(){
         return this.state.layers;
+    }
+
+    toggleTextEditor() {
+      this.setState({
+        showTextEditor: !this.state.showTextEditor
+      }, function() {
+        if(this.state.showTextEditor){
+          this.setState({
+            textEditorWidth: 4,
+            editorWidth: 6
+          });
+        } else{
+          this.setState({
+            textEditorWidth: 0,
+            editorWidth: 10
+          });
+        }
+      });
+
     }
 
     render() {
@@ -138,12 +161,12 @@ class UnwrappedApp extends Component {
                 <div className="App">
                     <Grid container className="root" spacing={0}>
                       <Grid item xs={2}>
-                        <Sidebar loadFile={this.loadFile}/>
+                        <Sidebar loadFile={this.loadFile} toggleTextEditor={this.toggleTextEditor} showTextEditor={this.state.showTextEditor}/>
                       </Grid>
-                      <Grid item xs={4}>
+                      <Grid item xs={this.state.textEditorWidth}>
                         <TextEditor onRef={ref => {this.child = ref}} parseFile={this.parseFile}/>
                       </Grid>
-                      <Grid item xs={6}>
+                      <Grid item xs={this.state.editorWidth}>
                         <Editor  updateLayers={this.updateLayers} getLayers={this.getLayers}/>
                       </Grid>
                     </Grid>
