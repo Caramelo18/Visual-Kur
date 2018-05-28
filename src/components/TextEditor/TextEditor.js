@@ -4,7 +4,7 @@ import { withStyles } from 'material-ui/styles';
 import AceEditor from 'react-ace';
 
 import 'brace/mode/yaml';
-import 'brace/theme/github';
+import 'brace/theme/xcode';
 
 
 const styles = theme => ({
@@ -54,9 +54,8 @@ class TextEditor extends Component {
             <AceEditor
               className={classes.rowC}
               mode="yaml"
-              theme="github"
+              theme="xcode"
               onChange={this.onChange}
-              name="nome"
               value={this.state.value}
             />
           </div>

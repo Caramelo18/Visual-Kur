@@ -72,7 +72,12 @@ class UnwrappedApp extends Component {
     }
 
     parseFile(fileContent) {
-        let file = yamljs.parse(fileContent).model;
+        let file;
+        try{
+            file = yamljs.parse(fileContent).model;
+        } catch(e){
+            return;
+        }
         let layers = [];
 
         const getLayer = (element) => {
