@@ -6,8 +6,9 @@ import Drawer from 'material-ui/Drawer';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import FilePicker from './FilePicker';
+import TextEditorToggle from './TextEditorToggle';
 
-const drawerWidth = 350;
+const drawerWidth = '18%';
 
 const styles = theme => ({
   appBar: {
@@ -23,7 +24,6 @@ const styles = theme => ({
 });
 
 class Sidebar extends React.Component {
-
   render() {
     const { classes, loadFile } = this.props;
 
@@ -43,6 +43,7 @@ class Sidebar extends React.Component {
             </Toolbar>
           </AppBar>
           <FilePicker loadFile={loadFile}/>
+          <TextEditorToggle toggleTextEditor={this.props.toggleTextEditor} showTextEditor={this.props.showTextEditor}/>
         </Drawer>
       </div>
     )
@@ -51,6 +52,7 @@ class Sidebar extends React.Component {
 
 Sidebar.propTypes = {
   classes: PropTypes.object.isRequired,
+  showTextEditor: PropTypes.bool
 };
 
 export default withStyles(styles)(Sidebar);
