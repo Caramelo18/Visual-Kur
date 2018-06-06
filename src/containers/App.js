@@ -95,43 +95,45 @@ class UnwrappedApp extends Component {
                 }
             }
 
-            if(element.hasOwnProperty('input')){
-                layer.type = "input";
-                layer.input = element["input"];
-            }
-            if(element.hasOwnProperty('convolution')){
-                layer.type = "convolution";
-                let components = element.convolution;
-                addLayerComponents(layer, components);
-            }else if(element.hasOwnProperty('activation')){
-                layer.type = "activation";
-                layer.activation = element.activation;
+            if(element !== undefined && element != null) {
 
-                if(element.hasOwnProperty("name")){
-                    layer.name = element["name"];
+                if (element.hasOwnProperty('input')) {
+                    layer.type = "input";
+                    layer.input = element["input"];
                 }
-            }else if(element.hasOwnProperty('pool')){
-                layer.type = "pool";
-                let components = element.pool;
-                addLayerComponents(layer, components);
-            }else if(element.hasOwnProperty('flatten')){
-                layer.type = "flatten";
-                let components = element.flatten;
-                addLayerComponents(layer, components);
-            }else if(element.hasOwnProperty('dense')){
-                layer.type = "dense";
-                let components = element.dense;
-                let arr = {x: components[0], y: components[1]};
-                layer["dense"] = arr;
-            }
+                if (element.hasOwnProperty('convolution')) {
+                    layer.type = "convolution";
+                    let components = element.convolution;
+                    addLayerComponents(layer, components);
+                } else if (element.hasOwnProperty('activation')) {
+                    layer.type = "activation";
+                    layer.activation = element.activation;
 
-            return layer;
-        }
+                    if (element.hasOwnProperty("name")) {
+                        layer.name = element["name"];
+                    }
+                } else if (element.hasOwnProperty('pool')) {
+                    layer.type = "pool";
+                    let components = element.pool;
+                    addLayerComponents(layer, components);
+                } else if (element.hasOwnProperty('flatten')) {
+                    layer.type = "flatten";
+                    let components = element.flatten;
+                    addLayerComponents(layer, components);
+                } else if (element.hasOwnProperty('dense')) {
+                    layer.type = "dense";
+                    layer["dense"] = element.dense && element.dense.length >= 2 ?
+                        {x: element.dense[0], y: element.dense[1]} : undefined;
+                }
+                return layer;
+            }
+            return null;
+        };
 
         for(let i = 0; i < file.length; i++){
             let element = file[i];
             let layer = getLayer(element);
-            layers.push(layer);
+            layer != null ? layers.push(layer) : null;
         }
 
         this.setState({layers});
