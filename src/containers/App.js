@@ -71,6 +71,10 @@ class UnwrappedApp extends Component {
     }
 
     setWatcher(filename) {
+        if (this.state.fileWatcher) {
+            this.state.fileWatcher.close()
+        }
+        
         let fileWatcher = chokidar.watch(filename, {
           persistent: true,
           usePolling: true
