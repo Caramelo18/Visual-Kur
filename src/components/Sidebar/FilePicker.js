@@ -28,6 +28,7 @@ class FilePicker extends React.Component {
       });
       let filePath = e.target.files[0].path;
       this.props.loadFile(filePath);
+      this.props.setWatcher(filePath);
     }
   };
 
