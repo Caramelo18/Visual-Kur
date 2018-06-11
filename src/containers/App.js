@@ -173,19 +173,8 @@ class UnwrappedApp extends Component {
             <MuiThemeProvider theme={theme}>
                 <div className="App">
                     <Grid container className="root" spacing={0}>
-<<<<<<< HEAD
-                      <Grid item xs={2}>
-                        <Sidebar loadFile={this.loadFile} setWatcher={this.setWatcher} toggleTextEditor={this.toggleTextEditor} showTextEditor={this.state.showTextEditor}/>
-                      </Grid>
-                      <Grid item xs={this.state.textEditorWidth}>
-                        <TextEditor onRef={ref => {this.child = ref}} parseFile={this.parseFile}/>
-                      </Grid>
-                      <Grid item xs={this.state.editorWidth}>
-                        <Editor  updateLayers={this.updateLayers} getLayers={this.getLayers}/>
-                      </Grid>
-=======
                         <Grid item xs={2}>
-                            <Sidebar loadFile={this.loadFile} toggleTextEditor={this.toggleTextEditor} showTextEditor={this.state.showTextEditor}/>
+                            <Sidebar loadFile={this.loadFile} setWatcher={this.setWatcher} toggleTextEditor={this.toggleTextEditor} showTextEditor={this.state.showTextEditor}/>
                         </Grid>
                         <Grid item xs={this.state.textEditorWidth}>
                             <TextEditor onRef={ref => {this.child = ref}} parseFile={this.parseFile}/>
@@ -193,7 +182,6 @@ class UnwrappedApp extends Component {
                         <Grid item xs={this.state.editorWidth}>
                             <Editor  updateLayers={this.updateLayers} getLayers={this.getLayers}/>
                         </Grid>
->>>>>>> master
                     </Grid>
                 </div>
             </MuiThemeProvider>
