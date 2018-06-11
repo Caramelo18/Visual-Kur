@@ -143,7 +143,7 @@ class UnwrappedApp extends Component {
         }
 
         this.setState({layers});
-        this.updateYamlFile();
+        //this.updateYamlFile();
     }
 
     updateYamlFile(){
@@ -155,19 +155,19 @@ class UnwrappedApp extends Component {
                 let comp = { input: layer.input };
                 newModel.push(comp);
             } else if (layer.type === "convolution"){
-                let comp = { convolution: { kernels: layer.kernels, size: [layer.size.x, layer.size.y] } };
+                let comp = { convolution: { kernels: parseInt(layer.kernels), size: [parseInt(layer.size[0]), parseInt(layer.size[1])] } };
                 newModel.push(comp);
             } else if (layer.type === "activation"){
                 let comp = { activation: layer.activation };
                 newModel.push(comp);
             } else if (layer.type === "pool") {
-                let comp = { pool: [layer[0], layer[1]] };
+                let comp = { pool: [parseInt(layer[0]), parseInt(layer[1])] };
                 newModel.push(comp);
             } else if (layer.type === "flatten") {
-                let comp = { flatten: null };
+                let comp = { flatten: '' };
                 newModel.push(comp);
             } else if (layer.type === "dense") {
-                let comp = { dense: [layer.dense.x, layer.dense.y] };
+                let comp = { dense: [parseInt(layer.dense[0]), parseInt(layer.dense[1])] };
                 newModel.push(comp);
             }
         }
@@ -175,8 +175,9 @@ class UnwrappedApp extends Component {
         let yamlFile = this.state.yamlFile;
         yamlFile.model = newModel;
 
-        let yamlString = yamljs.stringify(this.state.yamlFile, 4);
-        //console.log(yamlString);
+        let yamlText = yamljs.stringify(this.state.yamlFile, 4);
+        this.child.setText(yamlText);
+        console.log(yamlText);
     }
 
     getLayers(){
