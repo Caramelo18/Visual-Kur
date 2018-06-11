@@ -94,20 +94,17 @@ class UnwrappedApp extends Component {
 
             const addLayerComponents = (layer, element) => {
                 for(let property in element){
-                    if(Array.isArray(element[property])){
-                        let arr = {x: element[property][0], y: element[property][1]};
-                        layer[property] = arr;
-                        continue;
-                    }
                     layer[property] = element[property];
                 }
-            }
+            };
+
 
             if (element !== undefined && element != null) {
                 if (element.hasOwnProperty('input')) {
                     layer.type = "input";
                     layer.input = element["input"];
                 } else if (element.hasOwnProperty('convolution')) {
+
                     layer.type = "convolution";
                     let components = element.convolution;
                     addLayerComponents(layer, components);
@@ -127,16 +124,15 @@ class UnwrappedApp extends Component {
                     addLayerComponents(layer, components);
                 } else if (element.hasOwnProperty('dense')) {
                     layer.type = "dense";
-                    layer["dense"] = element.dense && element.dense.length >= 2 ? {x: element.dense[0], y: element.dense[1]} : undefined;
+                    layer["dense"] = element.dense && element.dense.length >= 2 ?
+                        [element.dense[0],element.dense[1]] : undefined;
                 }
 
                 if (Object.keys(layer).length === 0) {
-                  return null;
+                    return null;
                 }
-
                 return layer;
             }
-
             return null;
         };
 
@@ -154,21 +150,21 @@ class UnwrappedApp extends Component {
     }
 
     toggleTextEditor() {
-      this.setState({
-        showTextEditor: !this.state.showTextEditor
-      }, function() {
-        if(this.state.showTextEditor){
-          this.setState({
-            textEditorWidth: 4,
-            editorWidth: 6
-          });
-        } else{
-          this.setState({
-            textEditorWidth: 0,
-            editorWidth: 10
-          });
-        }
-      });
+        this.setState({
+            showTextEditor: !this.state.showTextEditor
+        }, function() {
+            if(this.state.showTextEditor){
+                this.setState({
+                    textEditorWidth: 4,
+                    editorWidth: 6
+                });
+            } else{
+                this.setState({
+                    textEditorWidth: 0,
+                    editorWidth: 10
+                });
+            }
+        });
 
     }
 
@@ -177,6 +173,7 @@ class UnwrappedApp extends Component {
             <MuiThemeProvider theme={theme}>
                 <div className="App">
                     <Grid container className="root" spacing={0}>
+<<<<<<< HEAD
                       <Grid item xs={2}>
                         <Sidebar loadFile={this.loadFile} setWatcher={this.setWatcher} toggleTextEditor={this.toggleTextEditor} showTextEditor={this.state.showTextEditor}/>
                       </Grid>
@@ -186,6 +183,17 @@ class UnwrappedApp extends Component {
                       <Grid item xs={this.state.editorWidth}>
                         <Editor  updateLayers={this.updateLayers} getLayers={this.getLayers}/>
                       </Grid>
+=======
+                        <Grid item xs={2}>
+                            <Sidebar loadFile={this.loadFile} toggleTextEditor={this.toggleTextEditor} showTextEditor={this.state.showTextEditor}/>
+                        </Grid>
+                        <Grid item xs={this.state.textEditorWidth}>
+                            <TextEditor onRef={ref => {this.child = ref}} parseFile={this.parseFile}/>
+                        </Grid>
+                        <Grid item xs={this.state.editorWidth}>
+                            <Editor  updateLayers={this.updateLayers} getLayers={this.getLayers}/>
+                        </Grid>
+>>>>>>> master
                     </Grid>
                 </div>
             </MuiThemeProvider>

@@ -14,6 +14,18 @@ export default class Tree extends Component {
         this.changeNodeSize = this.changeNodeSize.bind(this);
         this.changeNodePool = this.changeNodePool.bind(this);
         this.changeNodeDense = this.changeNodeDense.bind(this);
+        this.changeNodeKernels = this.changeNodeKernels.bind(this);
+
+    }
+    changeNodeKernels(node,path,getNodeKey, kernels) {
+        const newTree = changeNodeAtPath({
+            treeData: this.props.tree,
+            path,
+            getNodeKey,
+            newNode: {...node, kernels}
+        });
+
+        this.props.updateLayers(newTree);
     }
 
     changeNodeInput(node,path,getNodeKey, input) {
@@ -22,7 +34,7 @@ export default class Tree extends Component {
             path,
             getNodeKey,
             newNode: {...node, input}
-        })
+        });
 
         this.props.updateLayers(newTree);
     }
@@ -33,49 +45,39 @@ export default class Tree extends Component {
             path,
             getNodeKey,
             newNode: {...node, activation}
-        })
+        });
 
         this.props.updateLayers(newTree);
     }
 
     changeNodeSize(node,path,getNodeKey, x,y) {
-        let size = Object.assign({}, node.size);
-        size.x = x;
-        size.y = y;
+
         const newTree = changeNodeAtPath({
-                treeData: this.props.tree,
-                path,
-                getNodeKey,
-                newNode: {...node, size}
-            });
+            treeData: this.props.tree,
+            path,
+            getNodeKey,
+            newNode: {...node, size: {"0": x, "1": y}}
+        });
         this.props.updateLayers(newTree);
     }
 
     changeNodePool(node,path,getNodeKey, x,y) {
-        let pool = Object.assign({}, node.size);
-        pool.x = x;
-        pool.y = y;
-
         const newTree = changeNodeAtPath({
-                treeData: this.props.tree,
-                path,
-                getNodeKey,
-                newNode: {...node, pool}
-            })
+            treeData: this.props.tree,
+            path,
+            getNodeKey,
+            newNode: {...node, "0": x, "1":y}
+        });
         this.props.updateLayers(newTree);
     }
 
     changeNodeDense(node,path,getNodeKey, x,y) {
-        let dense = Object.assign({}, node.size);
-        dense.x = x;
-        dense.y = y;
-
         const newTree = changeNodeAtPath({
-                treeData: this.props.tree,
-                path,
-                getNodeKey,
-                newNode: {...node, dense}
-            });
+            treeData: this.props.tree,
+            path,
+            getNodeKey,
+            newNode: {...node, dense: {"0": x, "1": y }}
+        });
 
         this.props.updateLayers(newTree);
     }
@@ -87,6 +89,7 @@ export default class Tree extends Component {
         return (
             <div style={{height: TreeHeight}}>
                 <SortableTree
+                    rowHeight={85}
                     treeData={tree}
                     onChange={treeData => updateLayers(treeData)}
                     dndType={externalNodeType}
@@ -107,7 +110,7 @@ export default class Tree extends Component {
                         ],
                         title: (null),
                         subtitle: (
-                                <SubTitleExpansion color="primary"
+                            <SubTitleExpansion color="primary"
                                                node={node}
                                                path={path}
                                                getNodeKey={getNodeKey}
@@ -116,7 +119,8 @@ export default class Tree extends Component {
                                                changeNodeSize={this.changeNodeSize}
                                                changeNodePool={this.changeNodePool}
                                                changeNodeDense={this.changeNodeDense}
-                                />
+                                               changeNodeKernels={this.changeNodeKernels}
+                            />
                         )
                     })}
                 />
