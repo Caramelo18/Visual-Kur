@@ -43,7 +43,8 @@ class UnwrappedApp extends Component {
             showTextEditor: true,
             textEditorWidth: 4,
             editorWidth: 6,
-            fileWatcher: null
+            fileWatcher: null,
+            filepath: ""
         };
 
         this.updateLayers = this.updateLayers.bind(this);
@@ -63,8 +64,9 @@ class UnwrappedApp extends Component {
         this.setState({layers})
     }
 
-    loadFile(filename) {
-        fs.readFile(filename, 'utf-8').then(text => {
+    loadFile(filepath) {
+        this.setState({filepath})
+        fs.readFile(filepath, 'utf-8').then(text => {
             let yamlText = text;
             this.child.setText(yamlText);
             this.parseFile(yamlText);
@@ -75,7 +77,7 @@ class UnwrappedApp extends Component {
         if (this.state.fileWatcher) {
             this.state.fileWatcher.close()
         }
-        
+
         let fileWatcher = chokidar.watch(filename, {
           persistent: true,
           usePolling: true
@@ -85,9 +87,11 @@ class UnwrappedApp extends Component {
         this.setState({fileWatcher});
     }
 
-    saveFile(fileContent, filename) {
-        var fs = require('fs');
-        fs.writeFile("/tmp/test", fileContent);
+    saveFile(fileContent) {
+        fs.writeFile(this.state.filepath, fileContent, (err) => {
+            if (err) throw err;
+            console.log('The file has been saved!');
+        });
     }
 
     parseFile(fileContent) {

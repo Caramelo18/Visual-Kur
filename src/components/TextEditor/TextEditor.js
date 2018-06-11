@@ -41,8 +41,7 @@ class TextEditor extends Component {
 
     onChange(newValue) {
       this.props.parseFile(newValue);
-      console.log(newValue)
-      // this.props.saveFile(newValue, "teste.yaml")
+      this.props.saveFile(newValue)
       this.setState({
         value: newValue
       });
