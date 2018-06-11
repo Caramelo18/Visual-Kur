@@ -4,20 +4,16 @@ import 'react-sortable-tree/style.css'; // This only needs to be imported once i
 import {externalNodeType} from './NodetoDrag';
 import SubTitleExpansion from './SubTitleExpansion';
 
-
-
-const TreeHeight = window.innerHeight*0.95;
+const TreeHeight = window.innerHeight * 0.95;
 
 export default class Tree extends Component {
     constructor(props) {
         super(props);
-
         this.changeNodeInput = this.changeNodeInput.bind(this);
         this.changeNodeActivation = this.changeNodeActivation.bind(this);
         this.changeNodeSize = this.changeNodeSize.bind(this);
         this.changeNodePool = this.changeNodePool.bind(this);
         this.changeNodeDense = this.changeNodeDense.bind(this);
-
     }
 
     changeNodeInput(node,path,getNodeKey, input) {
@@ -41,7 +37,6 @@ export default class Tree extends Component {
 
         this.props.updateLayers(newTree);
     }
-
 
     changeNodeSize(node,path,getNodeKey, x,y) {
         let size = Object.assign({}, node.size);
@@ -85,9 +80,7 @@ export default class Tree extends Component {
         this.props.updateLayers(newTree);
     }
 
-
     render() {
-
         const getNodeKey = ({ treeIndex }) => treeIndex;
         const { updateLayers, tree } = this.props;
 
