@@ -38,6 +38,7 @@ class UnwrappedApp extends Component {
         super(props);
         this.state = {
             layers: [],
+            yamlFile: "",
             showTextEditor: true,
             textEditorWidth: 4,
             editorWidth: 6
@@ -56,7 +57,10 @@ class UnwrappedApp extends Component {
     }
 
     updateLayers(layers) {
-        this.setState({layers})
+        //console.log(layers);
+        this.setState({layers: layers}, function(){
+            this.updateYamlFile();
+        });
     }
 
     loadFile(filename) {
@@ -74,7 +78,12 @@ class UnwrappedApp extends Component {
     parseFile(fileContent) {
         let file;
         try{
-            file = yamljs.parse(fileContent).model;
+            let yamlFile = yamljs.parse(fileContent);
+            this.setState({
+              yamlFile: yamlFile
+            });
+            file = yamlFile.model;
+
         } catch(e){
             return;
         }
@@ -137,6 +146,40 @@ class UnwrappedApp extends Component {
         }
 
         this.setState({layers});
+        this.updateYamlFile();
+    }
+
+    updateYamlFile(){
+        /*console.log(this.state.layers);
+        console.log(this.state.yamlFile);*/
+        let newModel = [];
+        for(let layer of this.state.layers) {
+            if(layer.type === "input"){
+                let comp = { input: layer.input };
+                newModel.push(comp);
+            } else if (layer.type === "convolution"){
+                let comp = { convolution: { kernels: layer.kernels, size: [layer.size.x, layer.size.y] } };
+                newModel.push(comp);
+            } else if (layer.type === "activation"){
+                let comp = { activation: layer.activation };
+                newModel.push(comp);
+            } else if (layer.type === "pool") {
+                let comp = { pool: [layer[0], layer[1]] };
+                newModel.push(comp);
+            } else if (layer.type === "flatten") {
+                let comp = { flatten: null };
+                newModel.push(comp);
+            } else if (layer.type === "dense") {
+                let comp = { dense: [layer.dense.x, layer.dense.y] };
+                newModel.push(comp);
+            }
+        }
+
+        let yamlFile = this.state.yamlFile;
+        yamlFile.model = newModel;
+
+        let yamlString = yamljs.stringify(this.state.yamlFile, 4);
+        //console.log(yamlString);
     }
 
     getLayers(){
