@@ -25,7 +25,7 @@ const styles = theme => ({
 
 class Sidebar extends React.Component {
   render() {
-    const { classes, loadFile } = this.props;
+    const { classes, loadFile, setWatcher } = this.props;
 
     return (
       <div className={classes.root}>
@@ -42,7 +42,7 @@ class Sidebar extends React.Component {
               </Typography>
             </Toolbar>
           </AppBar>
-          <FilePicker loadFile={loadFile}/>
+          <FilePicker loadFile={loadFile} setWatcher={setWatcher}/>
           <TextEditorToggle toggleTextEditor={this.props.toggleTextEditor} showTextEditor={this.props.showTextEditor}/>
         </Drawer>
       </div>
