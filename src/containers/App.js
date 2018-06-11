@@ -62,12 +62,12 @@ class UnwrappedApp extends Component {
     loadFile(filename) {
         let yamlText;
         fetch(filename)
-          .then(response => response.text())
-          .then(text => {
-              yamlText = text;
-              this.child.setText(yamlText);
-              this.parseFile(yamlText);
-          });
+            .then(response => response.text())
+            .then(text => {
+                yamlText = text;
+                this.child.setText(yamlText);
+                this.parseFile(yamlText);
+            });
 
     }
 
@@ -81,29 +81,27 @@ class UnwrappedApp extends Component {
         let layers = [];
 
         const getLayer = (element) => {
-
             let layer = {};
 
             const addLayerComponents = (layer, element) => {
                 for(let property in element){
                     layer[property] = element[property];
                 }
-            }
+            };
 
-            if(element !== undefined && element != null) {
 
+            if (element !== undefined && element != null) {
                 if (element.hasOwnProperty('input')) {
                     layer.type = "input";
                     layer.input = element["input"];
-                }
-                if (element.hasOwnProperty('convolution')) {
+                } else if (element.hasOwnProperty('convolution')) {
+
                     layer.type = "convolution";
                     let components = element.convolution;
                     addLayerComponents(layer, components);
                 } else if (element.hasOwnProperty('activation')) {
                     layer.type = "activation";
                     layer.activation = element.activation;
-
                     if (element.hasOwnProperty("name")) {
                         layer.name = element["name"];
                     }
@@ -119,6 +117,10 @@ class UnwrappedApp extends Component {
                     layer.type = "dense";
                     layer["dense"] = element.dense && element.dense.length >= 2 ?
                         [element.dense[0],element.dense[1]] : undefined;
+                }
+
+                if (Object.keys(layer).length === 0) {
+                    return null;
                 }
                 return layer;
             }
@@ -139,21 +141,21 @@ class UnwrappedApp extends Component {
     }
 
     toggleTextEditor() {
-      this.setState({
-        showTextEditor: !this.state.showTextEditor
-      }, function() {
-        if(this.state.showTextEditor){
-          this.setState({
-            textEditorWidth: 4,
-            editorWidth: 6
-          });
-        } else{
-          this.setState({
-            textEditorWidth: 0,
-            editorWidth: 10
-          });
-        }
-      });
+        this.setState({
+            showTextEditor: !this.state.showTextEditor
+        }, function() {
+            if(this.state.showTextEditor){
+                this.setState({
+                    textEditorWidth: 4,
+                    editorWidth: 6
+                });
+            } else{
+                this.setState({
+                    textEditorWidth: 0,
+                    editorWidth: 10
+                });
+            }
+        });
 
     }
 
@@ -162,15 +164,15 @@ class UnwrappedApp extends Component {
             <MuiThemeProvider theme={theme}>
                 <div className="App">
                     <Grid container className="root" spacing={0}>
-                      <Grid item xs={2}>
-                        <Sidebar loadFile={this.loadFile} toggleTextEditor={this.toggleTextEditor} showTextEditor={this.state.showTextEditor}/>
-                      </Grid>
-                      <Grid item xs={this.state.textEditorWidth}>
-                        <TextEditor onRef={ref => {this.child = ref}} parseFile={this.parseFile}/>
-                      </Grid>
-                      <Grid item xs={this.state.editorWidth}>
-                        <Editor  updateLayers={this.updateLayers} getLayers={this.getLayers}/>
-                      </Grid>
+                        <Grid item xs={2}>
+                            <Sidebar loadFile={this.loadFile} toggleTextEditor={this.toggleTextEditor} showTextEditor={this.state.showTextEditor}/>
+                        </Grid>
+                        <Grid item xs={this.state.textEditorWidth}>
+                            <TextEditor onRef={ref => {this.child = ref}} parseFile={this.parseFile}/>
+                        </Grid>
+                        <Grid item xs={this.state.editorWidth}>
+                            <Editor  updateLayers={this.updateLayers} getLayers={this.getLayers}/>
+                        </Grid>
                     </Grid>
                 </div>
             </MuiThemeProvider>
