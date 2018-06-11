@@ -48,6 +48,7 @@ class UnwrappedApp extends Component {
         this.parseFile = this.parseFile.bind(this);
         this.getLayers = this.getLayers.bind(this);
         this.toggleTextEditor = this.toggleTextEditor.bind(this);
+        this.saveFile = this.saveFile.bind(this)
     }
 
 
@@ -69,6 +70,11 @@ class UnwrappedApp extends Component {
                 this.parseFile(yamlText);
             });
 
+    }
+
+    saveFile(fileContent, filename) {
+        var fs = require('fs');
+        fs.writeFile("/tmp/test", fileContent);
     }
 
     parseFile(fileContent) {
@@ -168,7 +174,7 @@ class UnwrappedApp extends Component {
                             <Sidebar loadFile={this.loadFile} toggleTextEditor={this.toggleTextEditor} showTextEditor={this.state.showTextEditor}/>
                         </Grid>
                         <Grid item xs={this.state.textEditorWidth}>
-                            <TextEditor onRef={ref => {this.child = ref}} parseFile={this.parseFile}/>
+                            <TextEditor onRef={ref => {this.child = ref}} parseFile={this.parseFile} saveFile={this.saveFile}/>
                         </Grid>
                         <Grid item xs={this.state.editorWidth}>
                             <Editor  updateLayers={this.updateLayers} getLayers={this.getLayers}/>
