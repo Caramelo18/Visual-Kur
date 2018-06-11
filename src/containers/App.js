@@ -86,11 +86,6 @@ class UnwrappedApp extends Component {
 
             const addLayerComponents = (layer, element) => {
                 for(let property in element){
-                    if(Array.isArray(element[property])){
-                        let arr = {x: element[property][0], y: element[property][1]};
-                        layer[property] = arr;
-                        continue;
-                    }
                     layer[property] = element[property];
                 }
             }
@@ -123,7 +118,7 @@ class UnwrappedApp extends Component {
                 } else if (element.hasOwnProperty('dense')) {
                     layer.type = "dense";
                     layer["dense"] = element.dense && element.dense.length >= 2 ?
-                        {x: element.dense[0], y: element.dense[1]} : undefined;
+                        [element.dense[0],element.dense[1]] : undefined;
                 }
                 return layer;
             }

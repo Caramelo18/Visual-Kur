@@ -5,91 +5,114 @@ import Typography from 'material-ui/Typography'
 export default class SubTitleExpansion extends Component {
 
     render() {
-        const {node,getNodeKey, path, changeNodeInput, changeNodeActivation,changeNodeSize, changeNodePool, changeNodeDense} = this.props
+        const {node,getNodeKey, path, changeNodeInput, changeNodeActivation,changeNodeSize, changeNodePool, changeNodeDense, changeNodeKernels} = this.props;
 
 
         const input = node.input != null ?
-            (<input
-                value={node.input}
-                onChange={event => {
-                    let input = event.target.value;
-                    changeNodeInput(node, path, getNodeKey, input)
-                }
-                }/>) : (null);
+            (<div>
+                input
+                <input
+                    value={node.input}
+                    onChange={event => {
+                        let input = event.target.value;
+                        changeNodeInput(node, path, getNodeKey, input)
+                    }
+                    }/>
+            </div>) : (null);
 
         const activation = node.activation != null ?
-            (<input
-                value={node.activation}
-                onChange={event => {
-                    let activation = event.target.value;
-                    changeNodeActivation(node, path, getNodeKey, activation)
-                }
-                }/>) : (null);
+            (<div>
+                activation
+                <input
+                    value={node.activation}
+                    onChange={event => {
+                        let activation = event.target.value;
+                        changeNodeActivation(node, path, getNodeKey, activation)
+                    }
+                    }/>
+            </div>) : (null);
 
         const size = node.size != null ?
             (<div>
-                <input value={node.size.x}
+                size
+                <input value={node.size[0]}
                        onChange={event => {
-                          let x = event.target.value;
-                          let y = node.size.y;
+                           let x = event.target.value;
+                           let y = node.size[1];
                            changeNodeSize(node, path, getNodeKey, x, y)
                        }
                        }/>
-                <input value={node.size.y}
+                <input value={node.size[1]}
                        onChange={event => {
                            let y = event.target.value;
-                           let x = node.size.x;
+                           let x = node.size[0];
                            changeNodeSize(node, path, getNodeKey, x, y)
                        }
                        }/>
             </div>) : (null);
 
-        const pool = node.pool != null ?
-            (
-                <div>
-                    <input value={node.pool.x}
-                           onChange={event => {
-                               let x = event.target.value;
-                               let y = node.pool.y;
-                               changeNodePool(node, path, getNodeKey, x, y)
-                           }
-                           }/>
-                    <input value={node.pool.y}
-                           onChange={event => {
-                               let y = event.target.value;
-                               let x = node.pool.x;
-                               changeNodePool(node, path, getNodeKey, x, y)
-                           }
-                           }/>
-                </div>
-            ):(null);
+        const kernels = node.kernels != null ?
+            (<div>
+                kernels
+                <input value={node.kernels}
+                       onChange={event => {
+                           let kernels = event.target.value;
+                           changeNodeKernels(node, path, getNodeKey, kernels)
+                       }
+                       }/>
+            </div>) : (null);
+
+        const pool = node.type === "pool" ?
+            (<div>
+                pool
+                <input value={node[0]}
+                       onChange={event => {
+                           let x = event.target.value;
+                           let y = node[1];
+                           changeNodePool(node, path, getNodeKey, x, y)
+                       }
+                       }/>
+                <input value={node[1]}
+                       onChange={event => {
+                           let y = event.target.value;
+                           let x = node[0];
+                           changeNodePool(node, path, getNodeKey, x, y)
+                       }
+                       }/>
+            </div>) : (null);
 
         const dense = node.dense != null ?
-            (
-                <div>
-                    <input value={node.dense.x}
-                           onChange={event => {
-                               let x = event.target.value;
-                               let y = node.dense.y;
-                               changeNodeDense(node, path, getNodeKey, x, y)
-                           }
-                           }/>
-                    <input value={node.dense.y}
-                           onChange={event => {
-                               let y = event.target.value;
-                               let x = node.dense.x;
-                               changeNodeDense(node, path, getNodeKey, x, y)
-                           }
-                           }/>
-                </div>
-            ):(null);
+            (<div>
+                dense  [
+                <input value={node.dense[0]}
+                       onChange={event => {
+                           let x = event.target.value;
+                           let y = node.dense[1];
+                           changeNodeDense(node, path, getNodeKey, x, y)
+                       }
+                       }/>
+                ,
+                <input value={node.dense[1]}
+                       onChange={event => {
+                           let y = event.target.value;
+                           let x = node.dense[0];
+                           changeNodeDense(node, path, getNodeKey, x, y)
+                       }
+                       }/>
+                ]
+            </div>) : (null);
 
+        const type = node.type === "convolution" || node.type === "flatten" ?
+            (<div>
+                {node.type}
+            </div>) : (null);
         return (
             <div>
-                <Typography>{node.type}</Typography>
+                {type}
                 {input}
                 {activation}
                 {size}
+                {kernels}
                 {pool}
                 {dense}
             </div>
