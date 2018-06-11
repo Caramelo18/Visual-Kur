@@ -9,7 +9,8 @@ import TextEditor from "../components/TextEditor/TextEditor";
 import yamljs from "yamljs";
 import Grid from 'material-ui/Grid';
 
-
+const electron = window.require('electron');
+const fs = electron.remote.require('mz/fs');
 
 const theme = createMuiTheme({
     root: {
@@ -60,14 +61,11 @@ class UnwrappedApp extends Component {
     }
 
     loadFile(filename) {
-        let yamlText;
-        fetch(filename)
-          .then(response => response.text())
-          .then(text => {
-              yamlText = text;
-              this.child.setText(yamlText);
-              this.parseFile(yamlText);
-          });
+        fs.readFile(filename, 'utf-8').then(text => {
+            let yamlText = text;
+            this.child.setText(yamlText);
+            this.parseFile(yamlText);
+        });
 
     }
 
