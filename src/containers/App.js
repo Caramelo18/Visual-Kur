@@ -44,7 +44,8 @@ class UnwrappedApp extends Component {
             textEditorWidth: 4,
             editorWidth: 6,
             fileWatcher: null,
-            filepath: ""
+            filepath: "",
+            fileContent: ""
         };
 
         this.updateLayers = this.updateLayers.bind(this);
@@ -54,6 +55,7 @@ class UnwrappedApp extends Component {
         this.getLayers = this.getLayers.bind(this);
         this.toggleTextEditor = this.toggleTextEditor.bind(this);
         this.saveFile = this.saveFile.bind(this)
+        this.updateContent = this.updateContent.bind(this)
     }
 
     componentDidMount() {
@@ -87,8 +89,14 @@ class UnwrappedApp extends Component {
         this.setState({fileWatcher});
     }
 
-    saveFile(fileContent) {
-        fs.writeFile(this.state.filepath, fileContent, (err) => {
+    updateContent(fileContent){
+      this.setState({fileContent});
+    }
+
+    saveFile() {
+        if(this.state.filepath == "")
+          return;
+        fs.writeFile(this.state.filepath, this.state.fileContent, (err) => {
             if (err) throw err;
             console.log('The file has been saved!');
         });
@@ -188,10 +196,10 @@ class UnwrappedApp extends Component {
                 <div className="App">
                     <Grid container className="root" spacing={0}>
                         <Grid item xs={2}>
-                            <Sidebar loadFile={this.loadFile} setWatcher={this.setWatcher} toggleTextEditor={this.toggleTextEditor} showTextEditor={this.state.showTextEditor}/>
+                            <Sidebar loadFile={this.loadFile} saveFile={this.saveFile} setWatcher={this.setWatcher} toggleTextEditor={this.toggleTextEditor} showTextEditor={this.state.showTextEditor}/>
                         </Grid>
                         <Grid item xs={this.state.textEditorWidth}>
-                            <TextEditor onRef={ref => {this.child = ref}} parseFile={this.parseFile} saveFile={this.saveFile}/>
+                            <TextEditor onRef={ref => {this.child = ref}} parseFile={this.parseFile} updateContent={this.updateContent}/>
                         </Grid>
                         <Grid item xs={this.state.editorWidth}>
                             <Editor  updateLayers={this.updateLayers} getLayers={this.getLayers}/>

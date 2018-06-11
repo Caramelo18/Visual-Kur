@@ -41,14 +41,14 @@ class TextEditor extends Component {
 
     onChange(newValue) {
       this.props.parseFile(newValue);
-      this.props.saveFile(newValue)
+      this.props.updateContent(newValue)
       this.setState({
         value: newValue
       });
     }
 
-    saveFile(fileValue) {
-      this.props.saveFile(fileValue);
+    updateContent(fileValue) {
+      this.props.updateContent(fileValue);
     }
 
     render() {
