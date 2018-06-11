@@ -81,7 +81,6 @@ class UnwrappedApp extends Component {
         let layers = [];
 
         const getLayer = (element) => {
-
             let layer = {};
 
             const addLayerComponents = (layer, element) => {
@@ -95,20 +94,17 @@ class UnwrappedApp extends Component {
                 }
             }
 
-            if(element !== undefined && element != null) {
-
+            if (element !== undefined && element != null) {
                 if (element.hasOwnProperty('input')) {
                     layer.type = "input";
                     layer.input = element["input"];
-                }
-                if (element.hasOwnProperty('convolution')) {
+                } else if (element.hasOwnProperty('convolution')) {
                     layer.type = "convolution";
                     let components = element.convolution;
                     addLayerComponents(layer, components);
                 } else if (element.hasOwnProperty('activation')) {
                     layer.type = "activation";
                     layer.activation = element.activation;
-
                     if (element.hasOwnProperty("name")) {
                         layer.name = element["name"];
                     }
@@ -122,11 +118,16 @@ class UnwrappedApp extends Component {
                     addLayerComponents(layer, components);
                 } else if (element.hasOwnProperty('dense')) {
                     layer.type = "dense";
-                    layer["dense"] = element.dense && element.dense.length >= 2 ?
-                        {x: element.dense[0], y: element.dense[1]} : undefined;
+                    layer["dense"] = element.dense && element.dense.length >= 2 ? {x: element.dense[0], y: element.dense[1]} : undefined;
                 }
+
+                if (Object.keys(layer).length === 0) {
+                  return null;
+                }
+
                 return layer;
             }
+
             return null;
         };
 
