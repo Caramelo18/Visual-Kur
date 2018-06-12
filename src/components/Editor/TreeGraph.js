@@ -6,7 +6,8 @@ import SubTitleExpansion from './SubTitleExpansion';
 import Button from 'material-ui/Button';
 import DeleteIcon from 'material-ui-icons/Delete'
 
-const TreeHeight = window.innerHeight * 0.95;
+const TreeHeight = window.innerHeight;
+
 
 export default class Tree extends Component {
     constructor(props) {
