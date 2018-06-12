@@ -56,8 +56,9 @@ class UnwrappedApp extends Component {
         this.parseFile = this.parseFile.bind(this);
         this.getLayers = this.getLayers.bind(this);
         this.toggleTextEditor = this.toggleTextEditor.bind(this);
-        this.saveFile = this.saveFile.bind(this)
-        this.updateContent = this.updateContent.bind(this)
+        this.saveFile = this.saveFile.bind(this);
+        this.fileSave = this.fileSave.bind(this);
+        this.updateContent = this.updateContent.bind(this);
     }
 
     componentDidMount() {
@@ -98,12 +99,25 @@ class UnwrappedApp extends Component {
     }
 
     saveFile() {
-        if(this.state.filepath == "")
-          return;
-        fs.writeFile(this.state.filepath, this.state.fileContent, (err) => {
-            if (err) throw err;
-            console.log('The file has been saved!');
-        });
+        if(this.state.filepath == ""){
+          const {dialog} = electron.remote;
+
+          var filepath = dialog.showSaveDialog({ defaultPath: "./file.yaml", filters:[ {extensions : "yaml"} ] });
+
+          if(filepath){
+            this.setState({filepath});
+            this.fileSave(filepath);
+          }
+        }
+        else
+          this.fileSave(this.state.filepath)
+    }
+
+    fileSave(filepath){
+      fs.writeFile(filepath, this.state.fileContent, (err) => {
+          if (err) throw err;
+          console.log('The file has been saved!');
+      });
     }
 
     parseFile(fileContent) {
