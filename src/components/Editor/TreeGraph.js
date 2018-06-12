@@ -3,6 +3,8 @@ import {SortableTreeWithoutDndContext as SortableTree, removeNodeAtPath, changeN
 import 'react-sortable-tree/style.css'; // This only needs to be imported once in your app
 import {externalNodeType} from './NodetoDrag';
 import SubTitleExpansion from './SubTitleExpansion';
+import Button from 'material-ui/Button';
+import DeleteIcon from 'material-ui-icons/Delete'
 
 const TreeHeight = window.innerHeight * 0.95;
 
@@ -89,13 +91,17 @@ export default class Tree extends Component {
         return (
             <div style={{height: TreeHeight}}>
                 <SortableTree
-                    rowHeight={85}
+                    rowHeight={95}
                     treeData={tree}
                     onChange={treeData => updateLayers(treeData)}
                     dndType={externalNodeType}
+                    maxDepth={1}
                     generateNodeProps={({ node, path }) => ({
                         buttons: [
-                            <button
+                            <Button
+                                aria-label="delete"
+                                size="small"
+                                color="secondary"
                                 onClick={() =>
                                     updateLayers(
                                         removeNodeAtPath({
@@ -105,8 +111,8 @@ export default class Tree extends Component {
                                         })
                                     )}
                             >
-                                Remove
-                            </button>
+                                <DeleteIcon />
+                            </Button>
                         ],
                         title: (null),
                         subtitle: (

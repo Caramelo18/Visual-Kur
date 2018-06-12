@@ -7,6 +7,8 @@ import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import FilePicker from './FilePicker';
 import TextEditorToggle from './TextEditorToggle';
+import Button from 'material-ui/Button';
+
 
 const drawerWidth = '18%';
 
@@ -44,7 +46,7 @@ class Sidebar extends React.Component {
           </AppBar>
           <FilePicker loadFile={loadFile} setWatcher={setWatcher}/>
           <TextEditorToggle toggleTextEditor={this.props.toggleTextEditor} showTextEditor={this.props.showTextEditor}/>
-          <button onClick={this.props.saveFile}>Save</button>
+          <Button onClick={this.props.saveFile}>Save</Button>
         </Drawer>
       </div>
     )
