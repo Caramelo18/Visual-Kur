@@ -102,7 +102,7 @@ class UnwrappedApp extends Component {
         if(this.state.filepath == ""){
           const {dialog} = electron.remote;
 
-          var filepath = dialog.showSaveDialog({ defaultPath: "./file.yaml", filters:[ {extensions : "yaml"} ] });
+          let filepath = dialog.showSaveDialog({ defaultPath: "./file.yaml", filters:[ {extensions : "yaml"} ] });
 
           if(filepath){
             this.setState({filepath});
