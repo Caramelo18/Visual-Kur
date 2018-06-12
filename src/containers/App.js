@@ -45,7 +45,9 @@ class UnwrappedApp extends Component {
             showTextEditor: true,
             textEditorWidth: 4,
             editorWidth: 6,
-            fileWatcher: null
+            fileWatcher: null,
+            filepath: "",
+            fileContent: ""
         };
 
         this.updateLayers = this.updateLayers.bind(this);
@@ -54,6 +56,8 @@ class UnwrappedApp extends Component {
         this.parseFile = this.parseFile.bind(this);
         this.getLayers = this.getLayers.bind(this);
         this.toggleTextEditor = this.toggleTextEditor.bind(this);
+        this.saveFile = this.saveFile.bind(this)
+        this.updateContent = this.updateContent.bind(this)
     }
 
     componentDidMount() {
@@ -66,8 +70,9 @@ class UnwrappedApp extends Component {
         });
     }
 
-    loadFile(filename) {
-        fs.readFile(filename, 'utf-8').then(text => {
+    loadFile(filepath) {
+        this.setState({filepath})
+        fs.readFile(filepath, 'utf-8').then(text => {
             let yamlText = text;
             this.child.setText(yamlText);
             this.parseFile(yamlText);
@@ -86,6 +91,19 @@ class UnwrappedApp extends Component {
 
         fileWatcher.on('change', path => this.loadFile(path));
         this.setState({fileWatcher});
+    }
+
+    updateContent(fileContent){
+      this.setState({fileContent});
+    }
+
+    saveFile() {
+        if(this.state.filepath == "")
+          return;
+        fs.writeFile(this.state.filepath, this.state.fileContent, (err) => {
+            if (err) throw err;
+            console.log('The file has been saved!');
+        });
     }
 
     parseFile(fileContent) {
@@ -227,10 +245,10 @@ class UnwrappedApp extends Component {
                 <div className="App">
                     <Grid container className="root" spacing={0}>
                         <Grid item xs={2}>
-                            <Sidebar loadFile={this.loadFile} setWatcher={this.setWatcher} toggleTextEditor={this.toggleTextEditor} showTextEditor={this.state.showTextEditor}/>
+                            <Sidebar loadFile={this.loadFile} saveFile={this.saveFile} setWatcher={this.setWatcher} toggleTextEditor={this.toggleTextEditor} showTextEditor={this.state.showTextEditor}/>
                         </Grid>
                         <Grid item xs={this.state.textEditorWidth}>
-                            <TextEditor onRef={ref => {this.child = ref}} parseFile={this.parseFile}/>
+                            <TextEditor onRef={ref => {this.child = ref}} parseFile={this.parseFile} updateContent={this.updateContent}/>
                         </Grid>
                         <Grid item xs={this.state.editorWidth}>
                             <Editor  updateLayers={this.updateLayers} getLayers={this.getLayers}/>

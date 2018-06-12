@@ -44,6 +44,7 @@ class Sidebar extends React.Component {
           </AppBar>
           <FilePicker loadFile={loadFile} setWatcher={setWatcher}/>
           <TextEditorToggle toggleTextEditor={this.props.toggleTextEditor} showTextEditor={this.props.showTextEditor}/>
+          <button onClick={this.props.saveFile}>Save</button>
         </Drawer>
       </div>
     )
