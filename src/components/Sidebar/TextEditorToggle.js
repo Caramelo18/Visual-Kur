@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
+import Button from 'material-ui/Button';
 
 const styles = theme => ({
   container: {
@@ -13,9 +14,9 @@ class TextEditorToggle extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <div className={classes.container}>
+      <Button className={classes.container}>
         <span onClick={this.props.toggleTextEditor}>{this.props.showTextEditor ? "Hide Text Editor" : "Show Text Editor"}</span>
-      </div>
+      </Button>
     )
   };
 };
