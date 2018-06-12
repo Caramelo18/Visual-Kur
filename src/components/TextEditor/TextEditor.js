@@ -37,11 +37,12 @@ class TextEditor extends Component {
         this.setState({
           value: text
         });
+        this.props.updateContent(text);
     }
 
     onChange(newValue) {
       this.props.parseFile(newValue);
-      this.props.updateContent(newValue)
+      this.props.updateContent(newValue);
       this.setState({
         value: newValue
       });
