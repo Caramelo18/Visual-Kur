@@ -159,25 +159,23 @@ class UnwrappedApp extends Component {
         }
 
         this.setState({layers});
-        console.log(file);
         this.updateYamlFile();
     }
 
     updateYamlFile(){
-        console.log(this.state.layers);
-        /*console.log(this.state.yamlFile);*/
+        //console.log(this.state.layers);
+        //console.log(this.state.yamlFile);
         let newModel = [];
         for(let layer of this.state.layers) {
             if(layer.type === "input"){
                 let comp = { input: layer.input };
                 newModel.push(comp);
-            } else if (layer.type === "convolution"){
+            } else if (layer.type === "convolution") {
                 let comp = { convolution: { kernels: parseInt(layer.kernels, 10), size: [parseInt(layer.size[0], 10), parseInt(layer.size[1], 10)] } };
                 newModel.push(comp);
-            } else if (layer.type === "activation"){
-                console.log(layer);
+            } else if (layer.type === "activation") {
                 let comp = { activation: layer.activation };
-                if (layer.hasOwnProperty('name')){
+                if (layer.hasOwnProperty('name')) {
                     comp.name = layer.name;
                 }
                 newModel.push(comp);
@@ -194,7 +192,6 @@ class UnwrappedApp extends Component {
         }
 
         let yamlFile = this.state.yamlFile;
-
         yamlFile.model = newModel;
 
         let yamlText = jsyaml.safeDump(yamlFile);
