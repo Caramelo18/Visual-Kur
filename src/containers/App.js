@@ -7,6 +7,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import Editor from "../components/Editor/Editor";
 import TextEditor from "../components/TextEditor/TextEditor";
 import yamljs from "yamljs";
+import jsyaml from "js-yaml";
 import Grid from 'material-ui/Grid';
 
 
@@ -38,7 +39,7 @@ class UnwrappedApp extends Component {
         super(props);
         this.state = {
             layers: [],
-            yamlFile: "",
+            yamlFile: {},
             showTextEditor: true,
             textEditorWidth: 4,
             editorWidth: 6
@@ -83,7 +84,6 @@ class UnwrappedApp extends Component {
               yamlFile: yamlFile
             });
             file = yamlFile.model;
-
         } catch(e){
             return;
         }
@@ -136,6 +136,10 @@ class UnwrappedApp extends Component {
             return null;
         };
 
+        if(file == null){
+            return;
+        }
+
         for(let i = 0; i < file.length; i++){
             let element = file[i];
             let layer = getLayer(element);
@@ -155,29 +159,29 @@ class UnwrappedApp extends Component {
                 let comp = { input: layer.input };
                 newModel.push(comp);
             } else if (layer.type === "convolution"){
-                let comp = { convolution: { kernels: parseInt(layer.kernels), size: [parseInt(layer.size[0]), parseInt(layer.size[1])] } };
+                let comp = { convolution: { kernels: parseInt(layer.kernels, 10), size: [parseInt(layer.size[0], 10), parseInt(layer.size[1], 10)] } };
                 newModel.push(comp);
             } else if (layer.type === "activation"){
                 let comp = { activation: layer.activation };
                 newModel.push(comp);
             } else if (layer.type === "pool") {
-                let comp = { pool: [parseInt(layer[0]), parseInt(layer[1])] };
+                let comp = { pool: [parseInt(layer[0], 10), parseInt(layer[1], 10)] };
                 newModel.push(comp);
             } else if (layer.type === "flatten") {
                 let comp = { flatten: '' };
                 newModel.push(comp);
             } else if (layer.type === "dense") {
-                let comp = { dense: [parseInt(layer.dense[0]), parseInt(layer.dense[1])] };
+                let comp = { dense: [parseInt(layer.dense[0], 10), parseInt(layer.dense[1], 10)] };
                 newModel.push(comp);
             }
         }
 
         let yamlFile = this.state.yamlFile;
+
         yamlFile.model = newModel;
 
-        let yamlText = yamljs.stringify(this.state.yamlFile, 4);
+        let yamlText = jsyaml.safeDump(yamlFile);
         this.child.setText(yamlText);
-        console.log(yamlText);
     }
 
     getLayers(){
