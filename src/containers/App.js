@@ -7,6 +7,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import Editor from "../components/Editor/Editor";
 import TextEditor from "../components/TextEditor/TextEditor";
 import yamljs from "yamljs";
+import jsyaml from "js-yaml";
 import Grid from 'material-ui/Grid';
 
 const electron = window.require('electron');
@@ -40,6 +41,7 @@ class UnwrappedApp extends Component {
         super(props);
         this.state = {
             layers: [],
+            yamlFile: {},
             showTextEditor: true,
             textEditorWidth: 4,
             editorWidth: 6,
@@ -59,7 +61,9 @@ class UnwrappedApp extends Component {
     }
 
     updateLayers(layers) {
-        this.setState({layers})
+        this.setState({layers: layers}, function(){
+            this.updateYamlFile();
+        });
     }
 
     loadFile(filename) {
@@ -74,7 +78,7 @@ class UnwrappedApp extends Component {
         if (this.state.fileWatcher) {
             this.state.fileWatcher.close()
         }
-        
+
         let fileWatcher = chokidar.watch(filename, {
           persistent: true,
           usePolling: true
@@ -87,7 +91,11 @@ class UnwrappedApp extends Component {
     parseFile(fileContent) {
         let file;
         try{
-            file = yamljs.parse(fileContent).model;
+            let yamlFile = yamljs.parse(fileContent);
+            this.setState({
+              yamlFile: yamlFile
+            });
+            file = yamlFile.model;
         } catch(e){
             return;
         }
@@ -140,6 +148,10 @@ class UnwrappedApp extends Component {
             return null;
         };
 
+        if(file == null){
+            return;
+        }
+
         for (let i = 0; i < file.length; i++) {
             let element = file[i];
             let layer = getLayer(element);
@@ -147,6 +159,43 @@ class UnwrappedApp extends Component {
         }
 
         this.setState({layers});
+        this.updateYamlFile();
+    }
+
+    updateYamlFile(){
+        //console.log(this.state.layers);
+        //console.log(this.state.yamlFile);
+        let newModel = [];
+        for(let layer of this.state.layers) {
+            if(layer.type === "input"){
+                let comp = { input: layer.input };
+                newModel.push(comp);
+            } else if (layer.type === "convolution") {
+                let comp = { convolution: { kernels: parseInt(layer.kernels, 10), size: [parseInt(layer.size[0], 10), parseInt(layer.size[1], 10)] } };
+                newModel.push(comp);
+            } else if (layer.type === "activation") {
+                let comp = { activation: layer.activation };
+                if (layer.hasOwnProperty('name')) {
+                    comp.name = layer.name;
+                }
+                newModel.push(comp);
+            } else if (layer.type === "pool") {
+                let comp = { pool: [parseInt(layer[0], 10), parseInt(layer[1], 10)] };
+                newModel.push(comp);
+            } else if (layer.type === "flatten") {
+                let comp = { flatten: '' };
+                newModel.push(comp);
+            } else if (layer.type === "dense") {
+                let comp = { dense: [parseInt(layer.dense[0], 10), parseInt(layer.dense[1], 10)] };
+                newModel.push(comp);
+            }
+        }
+
+        let yamlFile = this.state.yamlFile;
+        yamlFile.model = newModel;
+
+        let yamlText = jsyaml.safeDump(yamlFile);
+        this.child.setText(yamlText);
     }
 
     getLayers(){

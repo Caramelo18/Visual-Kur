@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Typography from 'material-ui/Typography'
 
 
 export default class SubTitleExpansion extends Component {
@@ -119,4 +118,3 @@ export default class SubTitleExpansion extends Component {
         )
     }
 }
-
