@@ -35,11 +35,11 @@ class Editor extends Component {
             <div className={classes.rowC}>
                 <div className={classes.sideBar}>
                     <YourExternalNodeComponent node={{ type:'input', input: 'images'}} />
-                    <YourExternalNodeComponent node={{ type: 'convolution', kernels: 23, size: {x :3, y:4} }}/>
+                    <YourExternalNodeComponent node={{ type: 'convolution', kernels: 23, size: [3, 4] }}/>
                     <YourExternalNodeComponent node={{ type: 'activation', activation: "relu"}} />
-                    <YourExternalNodeComponent node={{ type: 'pool', pool: {x: 3, y: 5} }} />
+                    <YourExternalNodeComponent node={{ '0': 1, '1': 2, type: 'pool'}} />
                     <YourExternalNodeComponent node={{ type: 'flatten'}} />
-                    <YourExternalNodeComponent node={{ type: 'dense', dense: {x: 3, y: 5} }} />
+                    <YourExternalNodeComponent node={{ type: 'dense', dense: [3,5] }} />
                 </div>
 
                 <div className={classes.treeDisplayer}>

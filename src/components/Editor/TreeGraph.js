@@ -99,7 +99,6 @@ export default class Tree extends Component {
                     generateNodeProps={({ node, path }) => ({
                         buttons: [
                             <Button
-                                variant="contained"
                                 aria-label="delete"
                                 size="small"
                                 color="secondary"
