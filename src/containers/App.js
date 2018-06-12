@@ -10,7 +10,9 @@ import yamljs from "yamljs";
 import jsyaml from "js-yaml";
 import Grid from 'material-ui/Grid';
 
-
+const electron = window.require('electron');
+const fs = electron.remote.require('mz/fs');
+const chokidar = electron.remote.require('chokidar');
 
 const theme = createMuiTheme({
     root: {
@@ -42,38 +44,48 @@ class UnwrappedApp extends Component {
             yamlFile: {},
             showTextEditor: true,
             textEditorWidth: 4,
-            editorWidth: 6
+            editorWidth: 6,
+            fileWatcher: null
         };
 
         this.updateLayers = this.updateLayers.bind(this);
         this.loadFile = this.loadFile.bind(this);
+        this.setWatcher = this.setWatcher.bind(this);
         this.parseFile = this.parseFile.bind(this);
         this.getLayers = this.getLayers.bind(this);
         this.toggleTextEditor = this.toggleTextEditor.bind(this);
     }
-
 
     componentDidMount() {
         //this.loadFile('./mnist.yml');
     }
 
     updateLayers(layers) {
-        //console.log(layers);
         this.setState({layers: layers}, function(){
             this.updateYamlFile();
         });
     }
 
     loadFile(filename) {
-        let yamlText;
-        fetch(filename)
-            .then(response => response.text())
-            .then(text => {
-                yamlText = text;
-                this.child.setText(yamlText);
-                this.parseFile(yamlText);
-            });
+        fs.readFile(filename, 'utf-8').then(text => {
+            let yamlText = text;
+            this.child.setText(yamlText);
+            this.parseFile(yamlText);
+        });
+    }
 
+    setWatcher(filename) {
+        if (this.state.fileWatcher) {
+            this.state.fileWatcher.close()
+        }
+
+        let fileWatcher = chokidar.watch(filename, {
+          persistent: true,
+          usePolling: true
+        });
+
+        fileWatcher.on('change', path => this.loadFile(path));
+        this.setState({fileWatcher});
     }
 
     parseFile(fileContent) {
@@ -140,19 +152,20 @@ class UnwrappedApp extends Component {
             return;
         }
 
-        for(let i = 0; i < file.length; i++){
+        for (let i = 0; i < file.length; i++) {
             let element = file[i];
             let layer = getLayer(element);
             layer != null ? layers.push(layer) : null;
         }
 
         this.setState({layers});
-        //this.updateYamlFile();
+        console.log(file);
+        this.updateYamlFile();
     }
 
     updateYamlFile(){
-        /*console.log(this.state.layers);
-        console.log(this.state.yamlFile);*/
+        console.log(this.state.layers);
+        /*console.log(this.state.yamlFile);*/
         let newModel = [];
         for(let layer of this.state.layers) {
             if(layer.type === "input"){
@@ -162,7 +175,11 @@ class UnwrappedApp extends Component {
                 let comp = { convolution: { kernels: parseInt(layer.kernels, 10), size: [parseInt(layer.size[0], 10), parseInt(layer.size[1], 10)] } };
                 newModel.push(comp);
             } else if (layer.type === "activation"){
+                console.log(layer);
                 let comp = { activation: layer.activation };
+                if (layer.hasOwnProperty('name')){
+                    comp.name = layer.name;
+                }
                 newModel.push(comp);
             } else if (layer.type === "pool") {
                 let comp = { pool: [parseInt(layer[0], 10), parseInt(layer[1], 10)] };
@@ -213,7 +230,7 @@ class UnwrappedApp extends Component {
                 <div className="App">
                     <Grid container className="root" spacing={0}>
                         <Grid item xs={2}>
-                            <Sidebar loadFile={this.loadFile} toggleTextEditor={this.toggleTextEditor} showTextEditor={this.state.showTextEditor}/>
+                            <Sidebar loadFile={this.loadFile} setWatcher={this.setWatcher} toggleTextEditor={this.toggleTextEditor} showTextEditor={this.state.showTextEditor}/>
                         </Grid>
                         <Grid item xs={this.state.textEditorWidth}>
                             <TextEditor onRef={ref => {this.child = ref}} parseFile={this.parseFile}/>

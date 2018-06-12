@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "chokidar": "^2.0.3",
     "js-yaml": "^3.12.0",
     "material-ui-icons": "^1.0.0-beta.36",
+    "mz": "^2.7.0",
     "react": "^16.2.0",
     "react-ace": "^6.1.1",
     "react-dom": "^16.2.0",
