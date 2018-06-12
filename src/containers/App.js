@@ -204,7 +204,8 @@ class UnwrappedApp extends Component {
                 let comp = { flatten: '' };
                 newModel.push(comp);
             } else if (layer.type === "dense") {
-                let comp = { dense: [parseInt(layer.dense[0], 10), parseInt(layer.dense[1], 10)] };
+
+                let comp = layer.dense? { dense: [parseInt(layer.dense[0], 10), parseInt(layer.dense[1], 10)] } : {dense: [ '', '' ]};
                 newModel.push(comp);
             }
         }
@@ -219,6 +220,7 @@ class UnwrappedApp extends Component {
     getLayers(){
         return this.state.layers;
     }
+
 
     toggleTextEditor() {
         this.setState({
