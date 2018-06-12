@@ -95,6 +95,7 @@ export default class Tree extends Component {
                     treeData={tree}
                     onChange={treeData => updateLayers(treeData)}
                     dndType={externalNodeType}
+                    maxDepth={1}
                     generateNodeProps={({ node, path }) => ({
                         buttons: [
                             <Button
