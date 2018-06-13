@@ -30,7 +30,9 @@ export default class SubTitleExpansion extends Component {
 
     render() {
 
-        const {node,getNodeKey, path, changeNodeInput, changeNodeActivation,changeNodeSize, changeNodePool, changeNodeDense, changeNodeKernels} = this.props;
+        const {node,getNodeKey, path, changeNodeInput,
+            changeNodeActivation,changeNodeSize, changeNodePool,
+            changeNodeDense, changeNodeKernels, changeNodeName, changeNodeOutput} = this.props;
 
 
 
@@ -87,6 +89,20 @@ export default class SubTitleExpansion extends Component {
                        }
                        }/>
 
+            </div>) : (null);
+
+        const name = node.name != null ?
+            (<div style={styles.nodeLine}>
+                <div style={styles.nodeField}>
+                    name
+                </div>
+
+                <input style={styles.numberInput}
+                       value={node.name}
+                       onChange={event => {
+                           changeNodeName(node, path, getNodeKey, event.target.value)
+                       }
+                       }/>
             </div>) : (null);
 
         const kernels = node.kernels != null ?
@@ -154,10 +170,26 @@ export default class SubTitleExpansion extends Component {
 
             </div>) : (null);
 
-        const type = node.type === "convolution" || node.type === "flatten" ?
+        const type = node.type === "convolution" || node.type === "flatten" || node.type === "batch_normalization" ?
             (<div style={styles.nodeName}>
                 {node.type}
             </div>) : (null);
+
+        const output = node.output != null ?
+            (<div>
+                <div style={styles.nodeName}>
+                    output
+                </div>
+
+                <input style={styles.textInput}
+                       value={node.output}
+                       onChange={event => {
+                           let output = event.target.value;
+                           changeNodeOutput(node, path, getNodeKey, output)
+                       }
+                       }/>
+            </div>) : (null);
+
         return (
             <div>
                 {type}
@@ -167,6 +199,8 @@ export default class SubTitleExpansion extends Component {
                 {kernels}
                 {pool}
                 {dense}
+                {name}
+                {output}
             </div>
         )
     }

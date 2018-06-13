@@ -18,7 +18,31 @@ export default class Tree extends Component {
         this.changeNodePool = this.changeNodePool.bind(this);
         this.changeNodeDense = this.changeNodeDense.bind(this);
         this.changeNodeKernels = this.changeNodeKernels.bind(this);
+        this.changeNodeName = this.changeNodeName.bind(this);
+        this.changeNodeOutput = this.changeNodeOutput.bind(this);
 
+    }
+
+    changeNodeOutput(node, path, getNodeKey, output) {
+            const newTree = changeNodeAtPath({
+                treeData: this.props.tree,
+                path,
+                getNodeKey,
+                newNode: {...node, output}
+            });
+
+            this.props.updateLayers(newTree);
+    }
+
+    changeNodeName(node, path, getNodeKey, name) {
+        const newTree = changeNodeAtPath({
+            treeData: this.props.tree,
+            path,
+            getNodeKey,
+            newNode: {...node, name}
+        });
+
+        this.props.updateLayers(newTree);
     }
     changeNodeKernels(node,path,getNodeKey, kernels) {
         const newTree = changeNodeAtPath({
@@ -127,6 +151,8 @@ export default class Tree extends Component {
                                                changeNodePool={this.changeNodePool}
                                                changeNodeDense={this.changeNodeDense}
                                                changeNodeKernels={this.changeNodeKernels}
+                                               changeNodeName={this.changeNodeName}
+                                               changeNodeOutput={this.changeNodeOutput}
                             />
                         )
                     })}
