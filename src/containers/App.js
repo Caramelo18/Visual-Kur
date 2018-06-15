@@ -82,9 +82,9 @@ class UnwrappedApp extends Component {
         this.setState({filepath})
         fs.readFile(filepath, 'utf-8').then(text => {
             let yamlText = text;
-            this.saveCurrentState();
             this.child.setText(yamlText);
             this.parseFile(yamlText);
+            this.saveCurrentState();
         });
     }
 
