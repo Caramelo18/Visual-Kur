@@ -15,11 +15,11 @@ class UndoRedo extends React.Component {
     const { classes } = this.props;
     return (
         <div>
-          <Button className={classes.container}>
-            <span onClick={this.props.undo}>Undo</span>
+          <Button className={classes.container} onClick={this.props.undo}>
+            <span>Undo</span>
           </Button>
-          <Button className={classes.container}>
-            <span onClick={this.props.redo}>Redo</span>
+          <Button className={classes.container} onClick={this.props.redo}>
+            <span>Redo</span>
           </Button>
         </div>
     )

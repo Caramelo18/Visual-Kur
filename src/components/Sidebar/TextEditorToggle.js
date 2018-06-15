@@ -14,8 +14,8 @@ class TextEditorToggle extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <Button className={classes.container}>
-        <span onClick={this.props.toggleTextEditor}>{this.props.showTextEditor ? "Hide Text Editor" : "Show Text Editor"}</span>
+      <Button className={classes.container} onClick={this.props.toggleTextEditor}>
+        <span>{this.props.showTextEditor ? "Hide Text Editor" : "Show Text Editor"}</span>
       </Button>
     )
   };
