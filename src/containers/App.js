@@ -209,8 +209,6 @@ class UnwrappedApp extends Component {
     }
 
     updateYamlFile(){
-        //console.log(this.state.layers);
-        //console.log(this.state.yamlFile);
         let newModel = [];
         for(let layer of this.state.layers) {
             if(layer.type === "input"){
@@ -244,8 +242,6 @@ class UnwrappedApp extends Component {
         }
 
         let yamlFile = this.state.yamlFile;
-        // console.log(this.state.yamlFile);
-        // console.log(yamlFile);
         yamlFile.model = newModel;
 
         let yamlText = jsyaml.safeDump(yamlFile);
@@ -281,7 +277,6 @@ class UnwrappedApp extends Component {
             let newState = this.state.stateStack[this.state.currentState - 1];
             this.setState({currentState: this.state.currentState - 1}, function() {
                 this.updateLayers(newState, true);
-                console.log(this.state.currentState);
             });
         }
     }
@@ -292,7 +287,6 @@ class UnwrappedApp extends Component {
         }
         let newState = this.state.stateStack[this.state.currentState + 1];
         this.setState({currentState: this.state.currentState + 1}, function() {
-            console.log(this.state.currentState);
             this.updateLayers(newState, true);
         });
     }
@@ -302,8 +296,6 @@ class UnwrappedApp extends Component {
         let stateStack = Object.assign(this.state.stateStack);
         stateStack.push(state);
         this.setState({currentState: this.state.currentState + 1, stateStack: stateStack}, function() {
-            console.log(this.state.stateStack);
-            console.log(this.state.currentState);
         });
     }
 
