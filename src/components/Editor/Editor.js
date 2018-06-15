@@ -40,6 +40,8 @@ class Editor extends Component {
                     <YourExternalNodeComponent node={{ '0': 1, '1': 2, type: 'pool'}} />
                     <YourExternalNodeComponent node={{ type: 'flatten'}} />
                     <YourExternalNodeComponent node={{ type: 'dense', dense: [3,5] }} />
+                    <YourExternalNodeComponent node={{ type: 'output', output: 'out_default' }} />
+                    <YourExternalNodeComponent node={{ type: 'batch_normalization'}} />
                 </div>
 
                 <div className={classes.treeDisplayer}>

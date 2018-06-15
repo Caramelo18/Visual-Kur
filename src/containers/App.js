@@ -170,6 +170,12 @@ class UnwrappedApp extends Component {
                     layer.type = "dense";
                     layer["dense"] = element.dense && element.dense.length >= 2 ?
                         [element.dense[0],element.dense[1]] : undefined;
+                } else if (element.hasOwnProperty('output')) {
+                    layer.type = "output";
+                    layer["output"] = element.output
+                } else if (element === 'batch_normalization')
+                {
+                    layer.type = "batch_normalization"
                 }
 
                 if (Object.keys(layer).length === 0) {
@@ -218,8 +224,13 @@ class UnwrappedApp extends Component {
                 let comp = { flatten: '' };
                 newModel.push(comp);
             } else if (layer.type === "dense") {
-
-                let comp = layer.dense? { dense: [parseInt(layer.dense[0], 10), parseInt(layer.dense[1], 10)] } : {dense: [ '', '' ]};
+                let comp = layer.dense ? {dense: [parseInt(layer.dense[0], 10), parseInt(layer.dense[1], 10)]} : {dense: ['', '']};
+                newModel.push(comp);
+            } else if (layer.type === "output") {
+                let comp = {output: layer.output};
+                newModel.push(comp);
+            } else if (layer.type === "batch_normalization") {
+                let comp = "batch_normalization";
                 newModel.push(comp);
             }
         }
