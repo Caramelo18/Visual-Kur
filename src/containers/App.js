@@ -48,7 +48,7 @@ class UnwrappedApp extends Component {
             fileWatcher: null,
             filepath: "",
             fileContent: "",
-            stateStack: [],
+            stateStack: [[]],
             currentState: 0
         };
 
@@ -70,11 +70,12 @@ class UnwrappedApp extends Component {
         //this.loadFile('./mnist.yml');
     }
 
-    updateLayers(layers) {
-        this.saveCurrentState();
+    updateLayers(layers, undoredo = false) {
         this.setState({layers: layers}, function(){
             this.updateYamlFile();
         });
+        if(!undoredo)
+          this.saveCurrentState();
     }
 
     loadFile(filepath) {
@@ -243,6 +244,8 @@ class UnwrappedApp extends Component {
         }
 
         let yamlFile = this.state.yamlFile;
+        // console.log(this.state.yamlFile);
+        // console.log(yamlFile);
         yamlFile.model = newModel;
 
         let yamlText = jsyaml.safeDump(yamlFile);
@@ -274,37 +277,34 @@ class UnwrappedApp extends Component {
     }
 
     undo() {
-        if(this.state.currentState >= 1){
+        if(this.state.currentState > 0){
             let newState = this.state.stateStack[this.state.currentState - 1];
             this.setState({currentState: this.state.currentState - 1}, function() {
-                this.updateLayers(newState);
+                this.updateLayers(newState, true);
                 console.log(this.state.currentState);
             });
         }
     }
 
     redo() {
-        console.log(this.state.currentState);
-        if(this.state.currentState > this.state.stateStack.length) {
+        if(this.state.currentState + 1 >= this.state.stateStack.length) {
             return;
         }
-        let newState = this.state.stateStack[this.state.currentState];
+        let newState = this.state.stateStack[this.state.currentState + 1];
         this.setState({currentState: this.state.currentState + 1}, function() {
-            this.updateLayers(newState);
-        })
-        console.log("Redo");
+            console.log(this.state.currentState);
+            this.updateLayers(newState, true);
+        });
     }
 
     saveCurrentState(){
         let state = Object.assign(this.state.layers);
         let stateStack = Object.assign(this.state.stateStack);
         stateStack.push(state);
-    /*    console.log(state);*/
-        console.log(stateStack);
         this.setState({currentState: this.state.currentState + 1, stateStack: stateStack}, function() {
-            /*console.log(this.state.stateStack);
-            console.log(this.state.currentState);*/
-        })
+            console.log(this.state.stateStack);
+            console.log(this.state.currentState);
+        });
     }
 
     render() {
