@@ -47,7 +47,9 @@ class UnwrappedApp extends Component {
             editorWidth: 6,
             fileWatcher: null,
             filepath: "",
-            fileContent: ""
+            fileContent: "",
+            stateStack: [[]],
+            currentState: 0
         };
 
         this.updateLayers = this.updateLayers.bind(this);
@@ -59,16 +61,21 @@ class UnwrappedApp extends Component {
         this.saveFile = this.saveFile.bind(this);
         this.fileSave = this.fileSave.bind(this);
         this.updateContent = this.updateContent.bind(this);
+        this.undo = this.undo.bind(this);
+        this.redo = this.redo.bind(this);
+        this.saveCurrentState = this.saveCurrentState.bind(this);
     }
 
     componentDidMount() {
         //this.loadFile('./mnist.yml');
     }
 
-    updateLayers(layers) {
+    updateLayers(layers, undoredo = false) {
         this.setState({layers: layers}, function(){
             this.updateYamlFile();
         });
+        if(!undoredo)
+          this.saveCurrentState();
     }
 
     loadFile(filepath) {
@@ -77,6 +84,7 @@ class UnwrappedApp extends Component {
             let yamlText = text;
             this.child.setText(yamlText);
             this.parseFile(yamlText);
+            this.saveCurrentState();
         });
     }
 
@@ -99,7 +107,7 @@ class UnwrappedApp extends Component {
     }
 
     saveFile() {
-        if(this.state.filepath == ""){
+        if(this.state.filepath === ""){
           const {dialog} = electron.remote;
 
           let filepath = dialog.showSaveDialog({ defaultPath: "./file.yaml", filters:[ {extensions : "yaml"} ] });
@@ -193,7 +201,9 @@ class UnwrappedApp extends Component {
         for (let i = 0; i < file.length; i++) {
             let element = file[i];
             let layer = getLayer(element);
-            layer != null ? layers.push(layer) : null;
+            if (layer != null) {
+                layers.push(layer);
+            }
         }
 
         this.setState({layers});
@@ -201,8 +211,6 @@ class UnwrappedApp extends Component {
     }
 
     updateYamlFile(){
-        //console.log(this.state.layers);
-        //console.log(this.state.yamlFile);
         let newModel = [];
         for(let layer of this.state.layers) {
             if(layer.type === "input"){
@@ -266,19 +274,46 @@ class UnwrappedApp extends Component {
 
     }
 
+    undo() {
+        if(this.state.currentState > 0){
+            let newState = this.state.stateStack[this.state.currentState - 1];
+            this.setState({currentState: this.state.currentState - 1}, function() {
+                this.updateLayers(newState, true);
+            });
+        }
+    }
+
+    redo() {
+        if(this.state.currentState + 1 >= this.state.stateStack.length) {
+            return;
+        }
+        let newState = this.state.stateStack[this.state.currentState + 1];
+        this.setState({currentState: this.state.currentState + 1}, function() {
+            this.updateLayers(newState, true);
+        });
+    }
+
+    saveCurrentState(){
+        let state = Object.assign(this.state.layers);
+        let stateStack = Object.assign(this.state.stateStack);
+        stateStack.push(state);
+        this.setState({currentState: this.state.currentState + 1, stateStack: stateStack}, function() {
+        });
+    }
+
     render() {
         return (
             <MuiThemeProvider theme={theme}>
                 <div className="App">
                     <Grid container className="root" spacing={0}>
                         <Grid item xs={2}>
-                            <Sidebar loadFile={this.loadFile} saveFile={this.saveFile} setWatcher={this.setWatcher} toggleTextEditor={this.toggleTextEditor} showTextEditor={this.state.showTextEditor}/>
+                            <Sidebar loadFile={this.loadFile} saveFile={this.saveFile} setWatcher={this.setWatcher} toggleTextEditor={this.toggleTextEditor} showTextEditor={this.state.showTextEditor} undo={this.undo} redo={this.redo}/>
                         </Grid>
                         <Grid item xs={this.state.textEditorWidth}>
                             <TextEditor onRef={ref => {this.child = ref}} parseFile={this.parseFile} updateContent={this.updateContent}/>
                         </Grid>
                         <Grid item xs={this.state.editorWidth}>
-                            <Editor  updateLayers={this.updateLayers} getLayers={this.getLayers}/>
+                            <Editor updateLayers={this.updateLayers} getLayers={this.getLayers}/>
                         </Grid>
                     </Grid>
                 </div>

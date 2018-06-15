@@ -7,6 +7,7 @@ import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
 import FilePicker from './FilePicker';
 import TextEditorToggle from './TextEditorToggle';
+import UndoRedo from './UndoRedo';
 import Button from 'material-ui/Button';
 
 
@@ -47,6 +48,7 @@ class Sidebar extends React.Component {
           <FilePicker loadFile={loadFile} setWatcher={setWatcher}/>
           <TextEditorToggle toggleTextEditor={this.props.toggleTextEditor} showTextEditor={this.props.showTextEditor}/>
           <Button onClick={this.props.saveFile}>Save</Button>
+          <UndoRedo undo={this.props.undo} redo={this.props.redo}/>
         </Drawer>
       </div>
     )
