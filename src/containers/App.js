@@ -201,7 +201,9 @@ class UnwrappedApp extends Component {
         for (let i = 0; i < file.length; i++) {
             let element = file[i];
             let layer = getLayer(element);
-            layer != null ? layers.push(layer) : null;
+            if (layer != null) {
+                layers.push(layer);
+            }
         }
 
         this.setState({layers});
